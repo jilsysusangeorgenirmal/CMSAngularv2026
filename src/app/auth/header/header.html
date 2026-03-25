@@ -1,0 +1,25 @@
+<nav class="navbar navbar-expand-lg bg-light shadow-sm p-3 custom-bg-nav-bar">
+    <div class="container-fluid">
+        <!--Brand-->
+        <div>
+            <a class="navbar-brand text-primary fw-bold" routerLink="/">
+                <img [src]="'assets/faith.png'" alt="Logo" width="40"
+                height="40" class="me-2" />
+                CMSv26
+            </a>
+        </div>
+
+        <!--Right-Side-items-->
+        <div class="d-flex align-items-center">
+            <!--Login Name-->
+            <span class="navbar-brand text-primary fw-bold">
+                <i class="fa fa-user"></i> {{loginName}} <!--Username stored in local setting-->
+            </span>
+
+            <!--LogOut Button-->
+            <button class="btn btn-outline-danger" (click)="logOut()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </div>
+</nav>

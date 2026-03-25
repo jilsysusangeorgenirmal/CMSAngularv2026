@@ -1,0 +1,87 @@
+<div class="container mt-5">
+    <div class="row align-items-cenetr">
+        <!--Left Side: EMS Profile Content-->
+        <div class="col-lg-6 d-flex align-items-center">
+            <div class="d-flex flex-row align-items-start w-100">
+                <!--Logo-->
+                <img src="assets/faith.png" alt="EMS Logo"
+                class="me-3" style="max-width:70px;">
+                <!--Welcome Text-->
+                <div>
+                    <h1 class="mb-3">&nbsp;&nbsp;&nbsp;Welcome to <br>Wellness Clinic CMS</h1>
+                    <p class="mb-3">
+                        Wellness Clinic Management System helps efficiently 
+                        manage patients, appointments, billing, and clinic workflow —
+                        all in one secure platform.
+                    </p>
+                    <ul>
+                        <li>Manage Clinical records</li>
+                        <li>Track department functionality metrics</li>
+                        <li>Generate insigthful reports</li>
+                    </ul>
+                </div>
+            </div>
+            
+        </div>
+        
+         <!--Right side: Login Form-->
+        <div class="col-lg-6">
+             <!--Login Form-->
+             <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4 class="card-title text-center">Enter your Credentials</h4>
+                    <hr>
+                    <!--Login Form-->
+                    <form [formGroup]="loginForm" (ngSubmit)="checkLoginCredentials()">
+                        <!--UserName-->
+                        <div class="form-group">
+                            <input type="text" placeholder="Enter User Name"
+                            formControlName="username" class="form-control">
+                            <br>
+
+                            <!--Validation Message-->
+                            <span class="text-danger"
+                                *ngIf="isSubmitted && getAllformControls['username'].errors?.['required']">
+                                User Name is invalid or required
+                            </span>
+                            <!--Pattern-->
+                            <span class="text-danger"
+                                *ngIf="isSubmitted && getAllformControls['username'].errors?.['pattern']">
+                                User Name must be 3-20 chaarcters, only letters, numbers, underscore
+                            </span>
+                        </div>
+
+                        <!--Password-->
+                        <div class="form-group">
+                            <input type="password" placeholder="Enter password"
+                            formControlName="password" class="form-control">
+                            <br>
+
+                            <!--Validation Message-->
+                            <span class="text-danger"
+                                *ngIf="isSubmitted && getAllformControls['password'].errors?.['required']">
+                                Password is invalid or required
+                            </span>
+                            <!--Pattern-->
+                            <span class="text-danger"
+                                *ngIf="isSubmitted && getAllformControls['username'].errors?.['pattern']">
+                                Password must be 3-8 characters, only letters, numbers, @ symbol
+                            </span>
+                        </div>
+                        <!--Submit Button-->
+                        <div>
+                            <button type="submit"
+                            class="btn btn-lg btn-primary form-control">Login</button>
+
+                        </div>
+                        <!--Error Message-->
+                        <div class="text-danger"*ngIf="errorMessage">{{errorMessage}}
+                        </div>
+
+                    </form>
+                </div>
+             </div>
+        </div>
+           
+    </div>
+</div>
