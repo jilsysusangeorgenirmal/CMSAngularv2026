@@ -1,1 +1,100 @@
-<p>appointment-list works!</p>
+<app-header-dashboard></app-header-dashboard>
+
+<div class="container">
+    <div class="header">
+        <div class="row mt-4 align-items-center">
+
+            <!-- Search Box -->
+            <div class="col-sm-6">
+                <div class="input-group">
+                    <input type="search"
+                        placeholder="Search appointment here"
+                        class="form-control"
+                        [(ngModel)]="searchTerm"
+                        (ngModelChange)="p = 1" />
+
+                    <button type="button"
+                            class="btn btn-outline-primary"
+                            (click)="searchAppointment()">
+                        <i class="fa fa-search fa-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Add Appointment -->
+            <!-- <div class="col-sm-3">
+                <a role="button"
+                   class="btn btn-outline-primary w-100"
+                   [routerLink]="['/appointments/add']">
+                    <i class="fa fa-calendar-plus fa-lg"></i>
+                    Add Appointment
+                </a>
+            </div> -->
+
+        </div>
+    </div>
+
+    <br>
+
+    <!-- Appointment Table -->
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Appointment Id</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Token No</th>
+                <th>Patient MRN</th>
+                <th>Patient Name</th>
+                <th>Doctor List</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let appt of appointmentService.appointments 
+                       | filterAppointmentsPipe: searchTerm 
+                       | paginate:{itemsPerPage: itemsPerPage, currentPage: p}">
+
+                <td>{{"APT-" + appt.AppointmentId}}</td>
+                <td>{{appt.AppointmentDate | date:'dd-MMM-yyyy'}}</td>
+                <td>{{appt.AppointmentTime}}</td>
+                <td>{{appt.TokenNo}}</td>
+                <td>{{appt.PatientId}}</td>
+                <td>{{appt.PatientName}}</td>
+                <td>{{appt.DoctorId}}</td>
+                <td>{{appt.Status}}</td>
+                <td>
+                    <!--Edit Appointment-->
+                    <button class="btn btn-sm btn-outline-info"
+                            (click)="editAppointment(appt)" title="Edit Appointment">
+                        <i class="fa fa-edit"></i>
+                    </button>
+
+                    &nbsp;
+
+                    <!--Cancel Appointment-->
+                    <button class="btn btn-sm btn-outline-danger"
+                            (click)="deleteAppointment(appt)" title="Cancel Appointment">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                   
+                    &nbsp;
+
+                    <!--Generate Bill Invoice-->
+                    <button class="btn btn-sm btn-outline-primary"
+                            (click)="generateBill(appt)" title="Generate Bill">
+                        <i class="fa-solid fa-receipt"></i>
+                    </button>
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <div class="d-flex justify-content-center mt-3">
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </div>
+</div>
