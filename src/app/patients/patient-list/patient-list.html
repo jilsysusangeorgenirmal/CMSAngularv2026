@@ -1,1 +1,103 @@
-<p>patient-list works!</p>
+<app-header-dashboard></app-header-dashboard>
+
+<div class="container">
+    <div class="header">
+        <div class="row mt-4 align-items-center">
+            <!-- Search Box + Button (NO SPACE) -->
+            <div class="col-sm-6">
+                <div class="input-group">
+                    <input type="search"
+                        placeholder="Search patient here"
+                        class="form-control"
+                        [(ngModel)]="searchTerm"
+                        (ngModelChange)="p = 1" />
+
+                    <button type="button"
+                            class="btn btn-outline-primary"
+                            (click)="searchPatient()">
+                        <i class="fa fa-search fa-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Add Patient -->
+            <div class="col-sm-3">
+                <a role="button"
+                class="btn btn-outline-primary w-100"
+                [routerLink]="['/patients/add']">
+                    <i class="fa fa-user-plus fa-lg"></i>
+                    Add Patient
+                </a>
+            </div>
+
+            <!-- Dashboard -->
+            <!-- <div class="col-sm-3">
+                <a [routerLink]="['/auth/receptionist']" role="button"
+                class="btn btn-outline-primary w-100">
+                    <i class="fa fa-tachometer fa-lg"></i>
+                    Dashboard
+                </a>
+            </div> -->
+
+        </div>
+    </div>
+
+
+    <!-- Display Records -->
+    <br>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Code</th>
+                <th scope="col">Full Name</th>
+                <th scope="col">Gender</th>
+                <th scope="col">DOB</th>
+                <th scope="col">Age</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Email</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let pat of patientService.patients| filterPatients: searchTerm 
+                       | paginate:{itemsPerPage: itemsPerPage, currentPage: p}">
+
+                <td>{{"PAT-" + pat.PatientId}}</td>
+                <td>{{pat.FirstName}} {{pat.LastName}}</td>
+                <td>{{pat.Gender}}</td>
+                <td>{{pat.Dob | date:"dd-MMM-yyyy"}}</td>
+                <td>{{pat.Age}}</td>
+                <td>{{pat.Phone}}</td>
+                <td>{{pat.Email}}</td>
+                <!-- <td>
+                    <input type="checkbox" [checked]="pat.IsActive" disabled>
+                </td> -->
+
+                <td>
+                    <!--Edit Patient icon-->
+                    <button class="btn btn-sm btn-outline-info"
+                            (click)="editPatient(pat)" title="Edit Patient">
+                        <i class="fa fa-edit"></i>
+                    </button>
+
+                    &nbsp; 
+
+                    <!--Add Appointment icon-->
+                    <button class="btn btn-sm btn-outline-success"
+                        (click)="addAppointment(pat)" title="Add Appointment">
+                    <i class="fa fa-plus"></i>
+                    </button>
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <div class="d-flex justify-content-center mt-3">
+        <pagination-controls (pageChange)="p = $event">
+        </pagination-controls>
+    </div>
+</div>

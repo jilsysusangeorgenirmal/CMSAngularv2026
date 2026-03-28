@@ -1,0 +1,124 @@
+<app-header-dashboard></app-header-dashboard>
+
+<div class="container">
+  <h3>Edit Appointment Info</h3>
+  <hr />
+
+  <form #appointmentForm="ngForm" name="frmAppointment" autocomplete="off"
+        (ngSubmit)="editAppointment(appointmentForm)">
+
+    <div class="form-group">
+    <!-- PatientId (Hidden) -->
+    <input type="hidden" readonly name="PatientId" [(ngModel)]="appointment.PatientId" />
+    </div>
+
+    <div class="form-group mb-3">
+
+        <!-- AppointmentId -->
+      <label>Appointment Id</label>
+      <input type="text" readonly name="AppointmentId" [(ngModel)]="appointment.AppointmentId" class="form-control fw-bold" />
+       
+      <!-- Patient -->
+      <label>Patient</label>
+      <input type="text" readonly name="PatientName" #PatientName="ngModel"
+             [(ngModel)]="appointment.PatientName"
+             class="form-control fw-bold" >
+    </div>
+
+    <!-- Appointment Date -->
+    <div class="form-group mb-3">
+      <label>Appointment Date</label>
+      <input type="date"
+             name="AppointmentDate"
+             #AppointmentDate="ngModel"
+             [(ngModel)]="appointment.AppointmentDate"
+             (change)="updateTimeSlots()"
+             class="form-control fw-bold"
+             required
+             [min]="minDate"
+             [max]="maxDate"
+             [ngClass]="{'is-invalid': (AppointmentDate.touched || appointmentForm.submitted) && AppointmentDate.invalid}" />
+
+      <span class="text-danger" *ngIf="(AppointmentDate.touched || appointmentForm.submitted) && AppointmentDate.errors?.['required']">
+        Appointment date is required
+      </span>
+      <span class="text-danger" *ngIf="(AppointmentDate.touched || appointmentForm.submitted) && (AppointmentDate.errors?.['min'] || AppointmentDate.errors?.['max'])">
+        Please select a valid date (Today or Tomorrow)
+      </span>
+    </div>
+
+    <!-- Doctor -->
+    <div class="form-group mb-3">
+      <label>Doctor:</label>
+      <select name="DoctorId" id="DoctorId" #DoctorId="ngModel"
+             [(ngModel)]="appointment.DoctorId" class="form-control fw-bold"
+             [ngClass]="{'is-invalid': (DoctorId.touched || appointmentForm.submitted) && (DoctorId.invalid || appointment.DoctorId == 0)}" required>
+            <option value="0" selected disabled>---Select Doctor---</option>
+            <option *ngFor="let doc of appointmentService.doctors" 
+            value="{{doc.DoctorId}}">{{doc.Name}}
+          </option>
+      </select>
+      <span class="text-danger" *ngIf="(DoctorId.touched || appointmentForm.submitted) && (DoctorId.errors?.['required'] || appointment.DoctorId == 0)">
+        Please select a Doctor
+      </span>
+    </div>
+
+    <!-- Appointment Time -->
+    <div class="form-group mb-3">
+      <label>Appointment Time</label>
+      <select name="AppointmentTime"
+              #AppointmentTime="ngModel"
+              [(ngModel)]="appointment.AppointmentTime"
+              class="form-control fw-bold"
+              required
+              [ngClass]="{'is-invalid': (AppointmentTime.touched || appointmentForm.submitted) && AppointmentTime.invalid}">
+        <option value="" disabled selected>-- Select Time --</option>
+        <option *ngFor="let slot of timeSlots" [value]="slot.value" [disabled]="slot.disabled">
+          {{ slot.text }}
+        </option>
+      </select>
+
+      <span class="text-danger" *ngIf="(AppointmentTime.touched || appointmentForm.submitted) && AppointmentTime.errors?.['required']">
+        Appointment time is required
+      </span>
+    </div>
+
+      <!--Status-->
+     <div class="form-group mb-3">
+      <label>Status</label>
+      <select name="Status"
+              #Status="ngModel"
+              [(ngModel)]="appointment.Status"
+              class="form-control fw-bold"
+              required
+              [ngClass]="{'is-invalid': (Status.touched || appointmentForm.submitted) && Status.invalid}">
+        <option value="" disabled selected>-- Select Status --</option>
+        <option value="Scheduled">Scheduled</option>
+        <option value="Rescheduled">Rescheduled</option>
+        <option value="Completed">Completed</option>
+        <option value="Cancelled">Cancelled</option>
+      </select>
+      <span class="text-danger" *ngIf="(Status.touched || appointmentForm.submitted) && Status.errors?.['required']">
+        Status is required
+      </span>
+    </div> 
+
+    IsActive 
+    <div class="form-group mb-3">
+      <div class="form-check">
+        <input type="checkbox"
+               name="IsActive"
+               [(ngModel)]="appointment.IsActive"
+               class="form-check-input" />
+        <label class="form-check-label">Active</label>
+      </div>
+    </div>
+
+    <!-- Submit -->
+    <button type="submit"
+            class="btn btn-success w-100">
+      EDIT APPOINTMENT
+    </button>
+
+  </form>
+</div>

@@ -35,7 +35,7 @@
                     <form [formGroup]="loginForm" (ngSubmit)="checkLoginCredentials()">
                         <!--UserName-->
                         <div class="form-group">
-                            <input type="text" placeholder="Enter User Name"
+                            <input type="text" placeholder="Enter User Name" maxlength="20"
                             formControlName="username" class="form-control">
                             <br>
 
@@ -47,13 +47,13 @@
                             <!--Pattern-->
                             <span class="text-danger"
                                 *ngIf="isSubmitted && getAllformControls['username'].errors?.['pattern']">
-                                User Name must be 3-20 chaarcters, only letters, numbers, underscore
+                                User Name must be 3-20 charcters, only letters, numbers, underscore
                             </span>
                         </div>
 
                         <!--Password-->
                         <div class="form-group">
-                            <input type="password" placeholder="Enter password"
+                            <input type="password" placeholder="Enter password" maxlength="20"
                             formControlName="password" class="form-control">
                             <br>
 
@@ -64,7 +64,7 @@
                             </span>
                             <!--Pattern-->
                             <span class="text-danger"
-                                *ngIf="isSubmitted && getAllformControls['username'].errors?.['pattern']">
+                                *ngIf="isSubmitted && getAllformControls['password'].errors?.['pattern']">
                                 Password must be 3-8 characters, only letters, numbers, @ symbol
                             </span>
                         </div>

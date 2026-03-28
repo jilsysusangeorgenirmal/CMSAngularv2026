@@ -5,6 +5,14 @@ import { ReceptionistDashboard } from './auth/receptionist-dashboard/receptionis
 import { DoctorDashboard } from './auth/doctor-dashboard/doctor-dashboard';
 import { LabtechnicianDashboard } from './auth/labtechnician-dashboard/labtechnician-dashboard';
 import { Notfound } from './auth/notfound/notfound';
+import { Patient } from './models/patient';
+import { PatientList } from './patients/patient-list/patient-list';
+import { PatientAdd } from './patients/patient-add/patient-add';
+import { PatientEdit } from './patients/patient-edit/patient-edit';
+import { Appointment } from './models/appointment';
+import { AppointmentList } from './appointments/appointment-list/appointment-list';
+import { AppointmentAdd } from './appointments/appointment-add/appointment-add';
+import { AppointmentEdit } from './appointments/appointment-edit/appointment-edit';
 
 
 export const routes: Routes = [
@@ -35,26 +43,46 @@ export const routes: Routes = [
       {path:'not found', component: Notfound} 
     ]
   },
-//   {
-//     path: 'employees',
-//     children: [
-//       { path: '', component: Employees },
-//       // call list of employees
-//       { path: 'list', component: EmployeeList,
-//         canActivate:[authGuard],
-//         data:{role:'2'} //Manager
-//        },
-//       // add an employee
-//       { path: 'add', component: EmployeeAdd,
-//         canActivate:[authGuard],
-//         data:{role:'2'} //Manager
-//        },
-//       { path: 'edit/:id', component: EmployeeEdit,
-//         canActivate:[authGuard],
-//         data:{role:['1', '2']} //acess both admin & manager by giving array
-//       }
-//     ]
-//   },
+  {
+    path: 'patients',
+    children: [
+      { path: '', component: Patient },
+      // call list of patients
+      { path: 'list', component: PatientList,
+        canActivate:[authGuard],
+        data:{role:'1'} //Receptionist
+       },
+      // add an patient
+      { path: 'add', component: PatientAdd,
+        canActivate:[authGuard],
+        data:{role:'1'} //Receptionist
+       },
+      { path: 'edit/:id', component: PatientEdit,
+        canActivate:[authGuard],
+        data:{role:'1'} //Receptionist
+      }
+    ]
+  },
+  {
+    path: 'appointments',
+    children: [
+      { path: '', component: Appointment },
+      // call list of patients
+      { path: 'list', component: AppointmentList,
+        canActivate:[authGuard],
+        data:{role:'1'} //Receptionist
+       },
+      // add an patient
+      { path: 'add', component: AppointmentAdd,
+        canActivate:[authGuard],
+        data:{role:'1'} //Receptionist
+       },
+      { path: 'edit/:id', component: AppointmentEdit,
+        canActivate:[authGuard],
+        data:{role:'1'} //Receptionist
+      }
+    ]
+  },
   {
     //WildCard route ---Login
     path:'**', component:Notfound

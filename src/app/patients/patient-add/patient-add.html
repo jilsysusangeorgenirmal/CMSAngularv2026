@@ -1,0 +1,168 @@
+<app-header-dashboard></app-header-dashboard>
+
+<div class="container">
+  <h3>New Patient Info</h3>
+  <hr />
+
+  <form name="frmPatient" #patientForm="ngForm" autocomplete="off" (ngSubmit)="addPatient(patientForm)">
+
+    <!-- PatientId -->
+    <input type="hidden" name="PatientId" [(ngModel)]="patient.PatientId" />
+
+   <!-- First Name -->
+<div class="form-group mb-3">
+  <label class="fw-semibold">First Name</label>
+  <input type="text"
+         name="FirstName"
+         #FirstName="ngModel"
+         [(ngModel)]="patient.FirstName"
+         class="form-control"
+         placeholder="Enter First Name"
+         minlength="2"
+         maxlength="25"
+         required
+         [ngClass]="{'is-invalid': (FirstName.touched || patientForm.submitted) && FirstName.invalid}" />
+
+  <span class="text-danger" *ngIf="(FirstName.touched || patientForm.submitted) && FirstName.errors?.['required']">
+    First Name is required
+  </span>
+  <span class="text-danger" *ngIf="(FirstName.touched || patientForm.submitted) && FirstName.errors?.['minlength']">
+    Minimum 2 characters required
+  </span>
+</div>
+
+<!-- Last Name -->
+<div class="form-group mb-3">
+  <label class="fw-semibold">Last Name</label>
+  <input type="text"
+         name="LastName"
+         #LastName="ngModel"
+         [(ngModel)]="patient.LastName"
+         class="form-control"
+         placeholder="Enter Last Name"
+         minlength="2"
+         maxlength="25"
+         required
+         [ngClass]="{'is-invalid': (LastName.touched || patientForm.submitted) && LastName.invalid}" />
+
+  <span class="text-danger" *ngIf="(LastName.touched || patientForm.submitted) && LastName.errors?.['required']">
+    Last Name is required
+  </span>
+</div>
+
+    <!-- Gender -->
+    <div class="form-group mb-3">
+      <label class="fw-semibold">Gender</label>
+      <select name="Gender"
+              #Gender="ngModel"
+              [(ngModel)]="patient.Gender"
+              class="form-control"
+              required
+              [ngClass]="{'is-invalid': (Gender.touched || patientForm.submitted) && Gender.invalid}">
+        <option value="" disabled selected>-- Select Gender --</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Other">Other</option>
+      </select>
+
+      <span class="text-danger" *ngIf="(Gender.touched || patientForm.submitted) && Gender.errors?.['required']">
+        Gender is required
+      </span>
+    </div>
+
+    <!-- DOB -->
+    <div class="form-group mb-3">
+      <label class="fw-semibold">Date of Birth</label>
+      <input type="date"
+             name="Dob"
+             #Dob="ngModel"
+             [(ngModel)]="patient.Dob"
+             class="form-control"
+             required
+             [ngClass]="{'is-invalid': (Dob.touched || patientForm.submitted) && Dob.invalid}" />
+
+      <span class="text-danger" *ngIf="(Dob.touched || patientForm.submitted) && Dob.errors?.['required']">
+        DOB is required
+      </span>
+    </div>
+
+    <!-- Phone -->
+    <div class="form-group mb-3">
+      <label class="fw-semibold">Phone</label>
+      <input type="text"
+             name="Phone"
+             #Phone="ngModel"
+             [(ngModel)]="patient.Phone"
+             class="form-control"
+             placeholder="Enter Phone +91xxxxxxxxxx"
+             minlength="10"
+             maxlength="10"
+             pattern="^[0-9]{10}$"
+             required
+             [ngClass]="{'is-invalid': (Phone.touched || patientForm.submitted) && Phone.invalid}" />
+
+      <span class="text-danger" *ngIf="(Phone.touched || patientForm.submitted) && Phone.errors?.['required']">
+        Phone is required
+      </span>
+      <span class="text-danger" *ngIf="(Phone.touched || patientForm.submitted) && Phone.errors?.['pattern']">
+        Enter valid 10-digit number
+      </span>
+    </div>
+
+    <!-- Email -->
+    <div class="form-group mb-3">
+      <label class="fw-semibold">Email</label>
+      <input type="email"
+             name="Email"
+             #Email="ngModel"
+             [(ngModel)]="patient.Email"
+             class="form-control"
+             placeholder="Enter Email"
+             required
+             email
+             [ngClass]="{'is-invalid': (Email.touched || patientForm.submitted) && Email.invalid}" />
+
+      <span class="text-danger" *ngIf="(Email.touched || patientForm.submitted) && Email.errors?.['required']">
+        Email is required
+      </span>
+      <span class="text-danger" *ngIf="(Email.touched || patientForm.submitted) && Email.errors?.['email']">
+        Invalid email format
+      </span>
+    </div>
+
+    <!-- Address -->
+    <div class="form-group mb-3">
+      <label class="fw-semibold">Address</label>
+      <textarea name="Address"
+                #Address="ngModel"
+                [(ngModel)]="patient.Address"
+                class="form-control"
+                rows="3"
+                required
+                [ngClass]="{'is-invalid': (Address.touched || patientForm.submitted) && Address.invalid}">
+      </textarea>
+
+      <span class="text-danger" *ngIf="(Address.touched || patientForm.submitted) && Address.errors?.['required']">
+        Address is required
+      </span>
+    </div>
+
+    <!-- IsActive -->
+    <!-- <div class="form-group mb-3">
+      <div class="form-check">
+        <input type="checkbox"
+               name="IsActive"
+               [(ngModel)]="patient.IsActive"
+               class="form-check-input" />
+        <label class="form-check-label">Active</label>
+      </div>
+    </div> -->
+
+    <!-- Submit -->
+    <button type="submit"
+            class="btn btn-primary w-100">
+      INSERT
+    </button>
+
+  </form>
+</div>
