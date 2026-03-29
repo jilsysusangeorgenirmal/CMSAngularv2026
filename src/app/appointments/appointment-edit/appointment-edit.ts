@@ -61,12 +61,9 @@ export class AppointmentEdit implements OnInit {
     this.minDate = todayStr;
     this.maxDate = tomorrowStr;
 
-    // Expand allowed ranges dynamically if editing an appointment booked far in the past/future
+    // Expand allowed ranges dynamically if editing an appointment booked far in the past
     if (this.appointment.AppointmentDate && this.appointment.AppointmentDate < this.minDate) {
         this.minDate = this.appointment.AppointmentDate;
-    }
-    if (this.appointment.AppointmentDate && this.appointment.AppointmentDate > this.maxDate) {
-        this.maxDate = this.appointment.AppointmentDate;
     }
 
     this.updateTimeSlots();
@@ -108,6 +105,19 @@ export class AppointmentEdit implements OnInit {
     }
   }
 
+  isInvalidDate(date: any): boolean {
+    if (!date) return false;
+    const year = new Date(date).getFullYear();
+    return year < 1916;
+  }
+
+  isFutureDate(date: any): boolean {
+    if (!date) return false;
+    const selectedDate = new Date(date);
+    const maxAllowed = new Date(this.maxDate);
+    return selectedDate > maxAllowed;
+  }
+
   loadDoctors(): void {
     if (this.appointmentService.doctors.length === 0) {
       this.appointmentService.getAllDoctors().subscribe();
@@ -117,6 +127,16 @@ export class AppointmentEdit implements OnInit {
   editAppointment(appointmentForm: NgForm): void {
     if (appointmentForm.invalid || this.appointment.DoctorId == 0) {
        this.toastr.warning('Please select all required fields correctly!', 'Validation Failed');
+       return;
+    }
+
+    if (this.isInvalidDate(this.appointment.AppointmentDate)) {
+       this.toastr.warning('Year of appointment cannot be earlier than 1916!', 'Validation Failed');
+       return;
+    }
+
+    if (this.isFutureDate(this.appointment.AppointmentDate)) {
+       this.toastr.warning('Appointment date cannot be beyond tomorrow!', 'Validation Failed');
        return;
     }
 
