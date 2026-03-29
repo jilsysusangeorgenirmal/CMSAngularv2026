@@ -33,6 +33,12 @@ export class PatientAdd {
     }
   }
 
+  isInvalidDate(dob: any): boolean {
+    if (!dob) return false;
+    const year = new Date(dob).getFullYear();
+    return year < 1916;
+  }
+
   //Submit form
   OnSubmit(patientForm: NgForm){
     console.log(patientForm.value);
@@ -46,6 +52,11 @@ export class PatientAdd {
   addPatient(patientForm:NgForm):void{
     if (patientForm.invalid) {
       this.toastr.warning('Please fill all required fields correctly!', 'Validation Failed');
+      return;
+    }
+
+    if (this.isInvalidDate(patientForm.value.Dob)) {
+      this.toastr.warning('Year of birth cannot be earlier than 1916!', 'Validation Failed');
       return;
     }
 

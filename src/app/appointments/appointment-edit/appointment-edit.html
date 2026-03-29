@@ -16,13 +16,13 @@
 
         <!-- AppointmentId -->
       <label>Appointment Id</label>
-      <input type="text" readonly name="AppointmentId" [(ngModel)]="appointment.AppointmentId" class="form-control fw-bold" />
+      <input type="text" readonly name="AppointmentId" [(ngModel)]="appointment.AppointmentId" class="form-control fw-bold w-25" />
        
       <!-- Patient -->
       <label>Patient</label>
       <input type="text" readonly name="PatientName" #PatientName="ngModel"
              [(ngModel)]="appointment.PatientName"
-             class="form-control fw-bold" >
+             class="form-control fw-bold w-50" >
     </div>
 
     <!-- Appointment Date -->
@@ -33,17 +33,23 @@
              #AppointmentDate="ngModel"
              [(ngModel)]="appointment.AppointmentDate"
              (change)="updateTimeSlots()"
-             class="form-control fw-bold"
+             class="form-control fw-bold w-25"
              required
              [min]="minDate"
              [max]="maxDate"
-             [ngClass]="{'is-invalid': (AppointmentDate.touched || appointmentForm.submitted) && AppointmentDate.invalid}" />
+             [ngClass]="{'is-invalid': (AppointmentDate.touched || appointmentForm.submitted) && (AppointmentDate.invalid || isInvalidDate(appointment.AppointmentDate) || isFutureDate(appointment.AppointmentDate))}" />
 
       <span class="text-danger" *ngIf="(AppointmentDate.touched || appointmentForm.submitted) && AppointmentDate.errors?.['required']">
         Appointment date is required
       </span>
-      <span class="text-danger" *ngIf="(AppointmentDate.touched || appointmentForm.submitted) && (AppointmentDate.errors?.['min'] || AppointmentDate.errors?.['max'])">
+      <span class="text-danger" *ngIf="(AppointmentDate.touched || appointmentForm.submitted) && (AppointmentDate.errors?.['min'] || AppointmentDate.errors?.['max']) && !isInvalidDate(appointment.AppointmentDate) && !isFutureDate(appointment.AppointmentDate)">
         Please select a valid date (Today or Tomorrow)
+      </span>
+      <span class="text-danger" *ngIf="(AppointmentDate.touched || appointmentForm.submitted) && isInvalidDate(appointment.AppointmentDate)">
+        Appointment date cannot be earlier than 1916
+      </span>
+      <span class="text-danger" *ngIf="(AppointmentDate.touched || appointmentForm.submitted) && isFutureDate(appointment.AppointmentDate)">
+        Appointment date cannot be beyond tomorrow
       </span>
     </div>
 
@@ -51,7 +57,7 @@
     <div class="form-group mb-3">
       <label>Doctor:</label>
       <select name="DoctorId" id="DoctorId" #DoctorId="ngModel"
-             [(ngModel)]="appointment.DoctorId" class="form-control fw-bold"
+             [(ngModel)]="appointment.DoctorId" class="form-control fw-bold w-25"
              [ngClass]="{'is-invalid': (DoctorId.touched || appointmentForm.submitted) && (DoctorId.invalid || appointment.DoctorId == 0)}" required>
             <option value="0" selected disabled>---Select Doctor---</option>
             <option *ngFor="let doc of appointmentService.doctors" 
@@ -69,7 +75,7 @@
       <select name="AppointmentTime"
               #AppointmentTime="ngModel"
               [(ngModel)]="appointment.AppointmentTime"
-              class="form-control fw-bold"
+              class="form-control fw-bold w-25"
               required
               [ngClass]="{'is-invalid': (AppointmentTime.touched || appointmentForm.submitted) && AppointmentTime.invalid}">
         <option value="" disabled selected>-- Select Time --</option>
@@ -89,7 +95,7 @@
       <select name="Status"
               #Status="ngModel"
               [(ngModel)]="appointment.Status"
-              class="form-control fw-bold"
+              class="form-control fw-bold w-25"
               required
               [ngClass]="{'is-invalid': (Status.touched || appointmentForm.submitted) && Status.invalid}">
         <option value="" disabled selected>-- Select Status --</option>
@@ -116,7 +122,7 @@
 
     <!-- Submit -->
     <button type="submit"
-            class="btn btn-success w-100">
+            class="btn btn-primary w-50">
       EDIT APPOINTMENT
     </button>
 

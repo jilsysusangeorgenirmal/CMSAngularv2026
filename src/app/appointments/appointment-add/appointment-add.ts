@@ -105,6 +105,13 @@ export class AppointmentAdd {
 
   }
 
+  isFutureDate(date: any): boolean {
+    if (!date) return false;
+    const selectedDate = new Date(date);
+    const maxAllowed = new Date(this.maxDate);
+    return selectedDate > maxAllowed;
+  }
+
   //Get all Doctors-- select dropdown box doctors names
   loadDoctors():void{
     if(this.appointmentService.doctors.length === 0){
@@ -116,6 +123,11 @@ export class AppointmentAdd {
   addAppointment(appointmentForm:NgForm):void{
     if (appointmentForm.invalid || this.appointment.DoctorId == 0) {
        this.toastr.warning('Please fill all required dropdowns correctly!', 'Validation Failed');
+       return;
+    }
+
+    if (this.isFutureDate(this.appointment.AppointmentDate)) {
+       this.toastr.warning('Appointment date cannot be beyond tomorrow!', 'Validation Failed');
        return;
     }
 

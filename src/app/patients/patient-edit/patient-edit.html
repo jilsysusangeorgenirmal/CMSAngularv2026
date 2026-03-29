@@ -22,7 +22,7 @@
          class="form-control fw-bold"
          placeholder="Enter First Name"
          minlength="2"
-         maxlength="25"
+         maxlength="40"
          required
          [ngClass]="{'is-invalid': FirstName.touched && FirstName.invalid}" />
 
@@ -44,7 +44,7 @@
          class="form-control fw-bold"
          placeholder="Enter Last Name"
          minlength="2"
-         maxlength="25"
+         maxlength="40"
          required
          [ngClass]="{'is-invalid': LastName.touched && LastName.invalid}" />
 
@@ -59,7 +59,7 @@
       <select name="Gender"
               #Gender="ngModel"
               [(ngModel)]="patient.Gender"
-              class="form-control fw-bold"
+              class="form-control fw-bold w-25"
               required
               [ngClass]="{'is-invalid': Gender.touched && Gender.invalid}">
         <option value="" disabled selected>-- Select Gender --</option>
@@ -80,12 +80,16 @@
              name="Dob"
              #Dob="ngModel"
              [(ngModel)]="patient.Dob"
-             class="form-control fw-bold"
+             class="form-control fw-bold w-25"
+             min="1916-01-01"
              required
-             [ngClass]="{'is-invalid': Dob.touched && Dob.invalid}" />
+             [ngClass]="{'is-invalid': Dob.touched && (Dob.invalid || isInvalidDate(patient.Dob))}" />
 
       <span class="text-danger" *ngIf="Dob.touched && Dob.errors?.['required']">
         DOB is required
+      </span>
+      <span class="text-danger" *ngIf="Dob.touched && isInvalidDate(patient.Dob)">
+        Date of birth cannot be earlier than 1916
       </span>
     </div>
 
@@ -123,6 +127,7 @@
              placeholder="Enter Email"
              required
              email
+             maxlength="40"
              [ngClass]="{'is-invalid': Email.touched && Email.invalid}" />
 
       <span class="text-danger" *ngIf="Email.touched && Email.errors?.['required']">
