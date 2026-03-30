@@ -56,9 +56,9 @@ export class ConsultationForm implements OnInit {
         this.successMessage = this.appointment._state.sMsg || '';
     } else {
         this.consultationForm = this.fb.group({
-          symptoms: ['', [Validators.required, Validators.minLength(3)]],
-          diagnosis: ['', [Validators.required, Validators.minLength(3)]],
-          advice: ['', Validators.required]
+          symptoms: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-Z0-9].*/)]],
+          diagnosis: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-Z0-9].*/)]],
+          advice: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9].*/)]]
         });
 
         this.labTestForm = this.fb.group({
@@ -136,9 +136,9 @@ export class ConsultationForm implements OnInit {
                        const medId = medIdRaw ? Number(medIdRaw) : '';
                        const medGroup = this.fb.group({
                           medicineId: [medId, Validators.required],
-                          dosage: [m.dosage || m.Dosage || '', Validators.required],
-                          duration: [m.duration || m.Duration || '', Validators.required],
-                          instructions: [m.instructions || m.Instructions || '']
+                          dosage: [m.dosage || m.Dosage || '', [Validators.required, Validators.pattern(/^[^\s].*/)]],
+                          duration: [m.duration || m.Duration || '', [Validators.required, Validators.pattern(/^[^\s].*/)]],
+                          instructions: [m.instructions || m.Instructions || '', [Validators.pattern(/^[^\s].*/)]]
                        });
                        this.medicinesArray.push(medGroup);
                     });
@@ -156,7 +156,7 @@ export class ConsultationForm implements OnInit {
                        const testId = testIdRaw ? Number(testIdRaw) : '';
                        const testGroup = this.fb.group({
                           labTestId: [testId, Validators.required],
-                          notes: [t.notes || t.Notes || '']
+                          notes: [t.notes || t.Notes || '', [Validators.pattern(/^[^\s].*/)]]
                        });
                        this.testsArray.push(testGroup);
                     });
@@ -239,7 +239,7 @@ export class ConsultationForm implements OnInit {
   addTest() {
     const testGroup = this.fb.group({
       labTestId: ['', Validators.required],
-      notes: ['']
+      notes: ['', [Validators.pattern(/^[^\s].*/)]]
     });
     this.testsArray.push(testGroup);
   }
@@ -253,8 +253,8 @@ export class ConsultationForm implements OnInit {
     const medGroup = this.fb.group({
       medicineId: ['', Validators.required],
       dosage: ['', Validators.required],
-      duration: ['', Validators.required],
-      instructions: ['']
+      duration: ['', [Validators.required, Validators.pattern(/^[^\s].*/)]],
+      instructions: ['', [Validators.pattern(/^[^\s].*/)]]
     });
     this.medicinesArray.push(medGroup);
   }

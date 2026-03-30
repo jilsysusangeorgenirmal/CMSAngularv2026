@@ -18,6 +18,25 @@ import { HeaderDashboard } from '../../auth/header-dashboard/header-dashboard';
 export class PatientAdd {
   //Declare variables
   patient:Patient = new Patient();
+  today: string = this.getToday();
+
+  // Helper to restrict numbers and special characters in keypress
+  allowLettersOnly(event: any): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    // Allow A-Z, a-z, and space
+    if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123) || charCode == 32) {
+      return true;
+    }
+    return false;
+  }
+
+getToday(): string {
+  const d = new Date();
+  const year = d.getFullYear();
+  const month = ('0' + (d.getMonth() + 1)).slice(-2);
+  const day = ('0' + d.getDate()).slice(-2);
+  return `${year}-${month}-${day}`;
+}
 
   //service and router injection
   constructor(public patientService :PatientService, private router:Router, private toastr: ToastrService
@@ -39,6 +58,15 @@ export class PatientAdd {
     return year < 1916;
   }
 
+  isFutureDate(dob: any): boolean {
+    if (!dob) return false;
+    const dobDate = new Date(dob);
+    const todayDate = new Date();
+    dobDate.setHours(0,0,0,0);
+    todayDate.setHours(0,0,0,0);
+    return dobDate > todayDate;
+  }
+
   //Submit form
   OnSubmit(patientForm: NgForm){
     console.log(patientForm.value);
@@ -57,6 +85,11 @@ export class PatientAdd {
 
     if (this.isInvalidDate(patientForm.value.Dob)) {
       this.toastr.warning('Year of birth cannot be earlier than 1916!', 'Validation Failed');
+      return;
+    }
+
+    if (this.isFutureDate(patientForm.value.Dob)) {
+      this.toastr.warning('Date of birth cannot be in the future!', 'Validation Failed');
       return;
     }
 

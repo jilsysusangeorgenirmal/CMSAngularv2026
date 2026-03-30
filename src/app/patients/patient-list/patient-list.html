@@ -92,6 +92,11 @@
                 </td>
 
             </tr>
+            <tr *ngIf="(patientService.patients | filterPatients: searchTerm).length === 0">
+                <td colspan="8" class="text-center">
+                    <span class="text-danger fw-bold">Empty search result</span>
+                </td>
+            </tr>
         </tbody>
     </table>
 

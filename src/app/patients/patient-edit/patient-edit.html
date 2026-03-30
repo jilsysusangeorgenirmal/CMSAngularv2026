@@ -24,6 +24,8 @@
          minlength="2"
          maxlength="40"
          required
+         pattern="^[a-zA-Z][a-zA-Z\s]*$"
+         (keypress)="allowLettersOnly($event)"
          [ngClass]="{'is-invalid': FirstName.touched && FirstName.invalid}" />
 
   <span class="text-danger" *ngIf="FirstName.touched && FirstName.errors?.['required']">
@@ -31,6 +33,9 @@
   </span>
   <span class="text-danger" *ngIf="FirstName.errors?.['minlength']">
     Minimum 2 characters required
+  </span>
+  <span class="text-danger" *ngIf="FirstName.touched && FirstName.errors?.['pattern']">
+    Leading spaces or only spaces are not allowed
   </span>
 </div>
 
@@ -46,10 +51,15 @@
          minlength="2"
          maxlength="40"
          required
+         pattern="^[a-zA-Z][a-zA-Z\s]*$"
+         (keypress)="allowLettersOnly($event)"
          [ngClass]="{'is-invalid': LastName.touched && LastName.invalid}" />
 
   <span class="text-danger" *ngIf="LastName.touched && LastName.errors?.['required']">
     Last Name is required
+  </span>
+  <span class="text-danger" *ngIf="LastName.touched && LastName.errors?.['pattern']">
+    Leading spaces or only spaces are not allowed
   </span>
 </div>
 
@@ -82,14 +92,18 @@
              [(ngModel)]="patient.Dob"
              class="form-control fw-bold w-25"
              min="1916-01-01"
+             [max]="today"
              required
-             [ngClass]="{'is-invalid': Dob.touched && (Dob.invalid || isInvalidDate(patient.Dob))}" />
+             [ngClass]="{'is-invalid': Dob.touched && (Dob.invalid || isInvalidDate(patient.Dob) || isFutureDate(patient.Dob))}" />
 
       <span class="text-danger" *ngIf="Dob.touched && Dob.errors?.['required']">
         DOB is required
       </span>
       <span class="text-danger" *ngIf="Dob.touched && isInvalidDate(patient.Dob)">
         Date of birth cannot be earlier than 1916
+      </span>
+      <span class="text-danger" *ngIf="Dob.touched && isFutureDate(patient.Dob)">
+        Date of birth cannot be in the future
       </span>
     </div>
 
@@ -104,15 +118,18 @@
              placeholder="Enter Phone +91xxxxxxxxxx"
              minlength="10"
              maxlength="10"
-             pattern="^[0-9]{10}$"
+             pattern="^[6-9][0-9]{9}$"
              required
              [ngClass]="{'is-invalid': Phone.touched && Phone.invalid}" />
 
       <span class="text-danger" *ngIf="Phone.touched && Phone.errors?.['required']">
-        Phone is required
+        Mobile number is required
       </span>
       <span class="text-danger" *ngIf="Phone.errors?.['pattern']">
-        Enter valid 10-digit number
+        Enter valid 10-digit mobile number
+      </span>
+       <span class="text-danger" *ngIf="(Phone.touched || patientForm.submitted) && Phone.errors?.['pattern']">
+        Enter valid 10-digit mobile number starting with 6, 7, 8, or 9
       </span>
     </div>
 
@@ -128,6 +145,7 @@
              required
              email
              maxlength="40"
+             pattern="^[^\s].*"
              [ngClass]="{'is-invalid': Email.touched && Email.invalid}" />
 
       <span class="text-danger" *ngIf="Email.touched && Email.errors?.['required']">
@@ -135,6 +153,9 @@
       </span>
       <span class="text-danger" *ngIf="Email.errors?.['email']">
         Invalid email format
+      </span>
+      <span class="text-danger" *ngIf="Email.touched && Email.errors?.['pattern']">
+        Leading spaces or only spaces are not allowed
       </span>
     </div>
 

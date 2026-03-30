@@ -19,20 +19,23 @@
           <div class="row">
             <div class="col-md-6 mb-3">
               <label class="form-label fw-bold">Symptoms</label>
-              <textarea formControlName="symptoms" class="form-control" [ngClass]="{'is-invalid': consultationForm.get('symptoms')?.invalid && consultationForm.get('symptoms')?.touched}" rows="3" placeholder="Describe symptoms..."></textarea>
+              <textarea formControlName="symptoms" class="form-control" [ngClass]="{'is-invalid': consultationForm.get('symptoms')?.invalid && (consultationForm.get('symptoms')?.touched || consultationForm.get('symptoms')?.dirty)}" rows="3" placeholder="Describe symptoms..."></textarea>
               <div class="invalid-feedback" *ngIf="consultationForm.get('symptoms')?.errors?.['required']">Symptoms are required</div>
-              <div class="invalid-feedback" *ngIf="consultationForm.get('symptoms')?.errors?.['minlength']">Enter valid symptoms</div>
+              <div class="invalid-feedback" *ngIf="consultationForm.get('symptoms')?.errors?.['minlength']">Minimum 3 characters required</div>
+              <div class="invalid-feedback" *ngIf="consultationForm.get('symptoms')?.errors?.['pattern']">Leading spaces or only spaces are not allowed</div>
             </div>
             <div class="col-md-6 mb-3">
               <label class="form-label fw-bold">Diagnosis</label>
-              <textarea formControlName="diagnosis" class="form-control" [ngClass]="{'is-invalid': consultationForm.get('diagnosis')?.invalid && consultationForm.get('diagnosis')?.touched}" rows="3" placeholder="Enter diagnosis..."></textarea>
+              <textarea formControlName="diagnosis" class="form-control" [ngClass]="{'is-invalid': consultationForm.get('diagnosis')?.invalid && (consultationForm.get('diagnosis')?.touched || consultationForm.get('diagnosis')?.dirty)}" rows="3" placeholder="Enter diagnosis..."></textarea>
               <div class="invalid-feedback" *ngIf="consultationForm.get('diagnosis')?.errors?.['required']">Diagnosis is required</div>
-              <div class="invalid-feedback" *ngIf="consultationForm.get('diagnosis')?.errors?.['minlength']">Enter valid diagnosis</div>
+              <div class="invalid-feedback" *ngIf="consultationForm.get('diagnosis')?.errors?.['minlength']">Minimum 3 characters required</div>
+              <div class="invalid-feedback" *ngIf="consultationForm.get('diagnosis')?.errors?.['pattern']">Leading spaces or only spaces are not allowed</div>
             </div>
             <div class="col-md-12 mb-3">
               <label class="form-label fw-bold">Advised Treatment/Notes</label>
-              <textarea formControlName="advice" class="form-control" [ngClass]="{'is-invalid': consultationForm.get('advice')?.invalid && consultationForm.get('advice')?.touched}" rows="2" placeholder="Additional doctor notes..."></textarea>
+              <textarea formControlName="advice" class="form-control" [ngClass]="{'is-invalid': consultationForm.get('advice')?.invalid && (consultationForm.get('advice')?.touched || consultationForm.get('advice')?.dirty)}" rows="2" placeholder="Additional doctor notes..."></textarea>
               <div class="invalid-feedback" *ngIf="consultationForm.get('advice')?.errors?.['required']">Advice is required</div>
+              <div class="invalid-feedback" *ngIf="consultationForm.get('advice')?.errors?.['pattern']">Leading spaces or only spaces are not allowed</div>
             </div>
           </div>
         </form>
@@ -88,7 +91,11 @@
               </div>
               <div class="col-md-2">
                 <label>Duration</label>
-                <input type="text" formControlName="duration" class="form-control" placeholder="e.g. 3 days">
+                <input type="text" formControlName="duration" class="form-control"
+                       [ngClass]="{'is-invalid': med.get('duration')?.invalid && (med.get('duration')?.touched || med.get('duration')?.dirty)}"
+                       placeholder="e.g. 3 days">
+                <div class="invalid-feedback" *ngIf="med.get('duration')?.errors?.['required']">Duration is required</div>
+                <div class="invalid-feedback" *ngIf="med.get('duration')?.errors?.['pattern']">Leading spaces not allowed</div>
               </div>
               <div class="col-md-3">
                 <label>Instructions</label>
@@ -121,7 +128,10 @@
             <div *ngFor="let test of testsArray.controls; let i=index" [formGroupName]="i" class="row align-items-end mb-3 pb-3 border-bottom">
               <div class="col-md-6">
                 <label>Instructions (e.g. fasting)</label>
-                <input type="text" formControlName="notes" class="form-control" placeholder="Instructions for lab tech">
+                <input type="text" formControlName="notes" class="form-control"
+                       [ngClass]="{'is-invalid': test.get('notes')?.invalid && (test.get('notes')?.touched || test.get('notes')?.dirty)}"
+                       placeholder="Instructions for lab tech">
+                <div class="invalid-feedback" *ngIf="test.get('notes')?.errors?.['pattern']">Leading spaces not allowed</div>
               </div>
               <div class="col-md-5">
                 <label>Lab Test Dropdown</label>
