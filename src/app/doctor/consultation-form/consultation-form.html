@@ -1,0 +1,127 @@
+<div class="consultation-modal shadow-lg rounded bg-white">
+  <div class="modal-header d-flex justify-content-between align-items-center bg-primary text-white p-3 rounded-top">
+    <h4 class="mb-0"><i class="fas fa-file-medical"></i> Consultation: {{ appointment?.Patient?.FirstName }} {{ appointment?.Patient?.LastName }}</h4>
+    <button class="btn btn-light btn-sm fw-bold shadow-sm rounded-pill px-3" (click)="closeForm()">
+      <i class="fas fa-arrow-left me-2"></i> Back to Appointments
+    </button>
+  </div>
+
+  <div class="modal-body p-4">
+    <!-- Messages -->
+    <div class="alert alert-success mt-2" *ngIf="successMessage">{{ successMessage }}</div>
+    <div class="alert alert-danger mt-2" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+    <!-- Step 1: Core Consultation Details -->
+    <div class="card mb-4 border-primary shadow-sm">
+      <div class="card-header bg-primary fw-bold text-white"><i class="fas fa-stethoscope"></i> Core Diagnosis</div>
+      <div class="card-body">
+        <form [formGroup]="consultationForm">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label fw-bold">Symptoms</label>
+              <textarea formControlName="symptoms" class="form-control" [ngClass]="{'is-invalid': consultationForm.get('symptoms')?.invalid && consultationForm.get('symptoms')?.touched}" rows="3" placeholder="Describe symptoms..."></textarea>
+              <div class="invalid-feedback" *ngIf="consultationForm.get('symptoms')?.errors?.['required']">Symptoms are required</div>
+              <div class="invalid-feedback" *ngIf="consultationForm.get('symptoms')?.errors?.['minlength']">Enter valid symptoms</div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label fw-bold">Diagnosis</label>
+              <textarea formControlName="diagnosis" class="form-control" [ngClass]="{'is-invalid': consultationForm.get('diagnosis')?.invalid && consultationForm.get('diagnosis')?.touched}" rows="3" placeholder="Enter diagnosis..."></textarea>
+              <div class="invalid-feedback" *ngIf="consultationForm.get('diagnosis')?.errors?.['required']">Diagnosis is required</div>
+              <div class="invalid-feedback" *ngIf="consultationForm.get('diagnosis')?.errors?.['minlength']">Enter valid diagnosis</div>
+            </div>
+            <div class="col-md-12 mb-3">
+              <label class="form-label fw-bold">Advised Treatment/Notes</label>
+              <textarea formControlName="advice" class="form-control" [ngClass]="{'is-invalid': consultationForm.get('advice')?.invalid && consultationForm.get('advice')?.touched}" rows="2" placeholder="Additional doctor notes..."></textarea>
+              <div class="invalid-feedback" *ngIf="consultationForm.get('advice')?.errors?.['required']">Advice is required</div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Step 2: Medicines & Lab Tests (Always visible) -->
+    <!-- Medicines Forms -->
+    <div class="card mb-4 border-success shadow-sm">
+      <div class="card-header bg-success fw-bold text-white d-flex justify-content-between align-items-center">
+        <span><i class="fas fa-pills"></i> Medications</span>
+        <button class="btn btn-sm btn-light" type="button" (click)="addMedicine()"><i class="fas fa-plus"></i> Add Medicine</button>
+      </div>
+      <div class="card-body bg-light">
+        <form [formGroup]="medicineForm">
+          <div formArrayName="medicines">
+            <div *ngFor="let med of medicinesArray.controls; let i=index" [formGroupName]="i" class="row align-items-end mb-3 pb-3 border-bottom">
+              <div class="col-md-3">
+                <label>Medicine</label>
+                <select formControlName="medicineId" class="form-select">
+                   <option [ngValue]="null" disabled>Select Medicine...</option>
+                   <option *ngFor="let m of availableMedicines" [ngValue]="m.id">{{ m.name }}</option>
+                </select>
+              </div>
+              <div class="col-md-2">
+                <label>Dosage</label>
+                <input type="text" formControlName="dosage" class="form-control" placeholder="e.g. 500mg">
+              </div>
+              <div class="col-md-2">
+                <label>Duration</label>
+                <input type="text" formControlName="duration" class="form-control" placeholder="e.g. 3 days">
+              </div>
+              <div class="col-md-4">
+                <label>Instructions</label>
+                <select formControlName="instructions" class="form-select">
+                  <option value="" disabled>Select Instruction...</option>
+                  <option value="Before Food">Before Food</option>
+                  <option value="After Food">After Food</option>
+                  <option value="With Food">With Food</option>
+                  <option value="Empty Stomach">Empty Stomach</option>
+                </select>
+              </div>
+              <div class="col-md-1 text-center">
+                <button type="button" class="btn btn-outline-danger btn-sm" (click)="removeMedicine(i)"><i class="fas fa-trash"></i></button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Lab Tests Forms -->
+    <div class="card border-info shadow-sm">
+      <div class="card-header bg-info fw-bold text-white d-flex justify-content-between align-items-center">
+        <span><i class="fas fa-flask"></i> Lab Tests</span>
+        <button class="btn btn-sm btn-light" type="button" (click)="addTest()"><i class="fas fa-plus"></i> Add Test</button>
+      </div>
+      <div class="card-body bg-light">
+        <form [formGroup]="labTestForm">
+          <div formArrayName="tests">
+            <div *ngFor="let test of testsArray.controls; let i=index" [formGroupName]="i" class="row align-items-end mb-3 pb-3 border-bottom">
+              <div class="col-md-6">
+                <label>Instructions (e.g. fasting)</label>
+                <input type="text" formControlName="notes" class="form-control" placeholder="Instructions for lab tech">
+              </div>
+              <div class="col-md-5">
+                <label>Lab Test Dropdown</label>
+                <select formControlName="labTestId" class="form-select">
+                   <option [ngValue]="null" disabled>Select Lab Test...</option>
+                   <option *ngFor="let t of availableLabTests" [ngValue]="t.id">{{ t.name }}</option>
+                </select>
+              </div>
+              <div class="col-md-1 text-center">
+                <button type="button" class="btn btn-outline-danger btn-sm" (click)="removeTest(i)"><i class="fas fa-trash"></i></button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    
+    <!-- One Single Save & Finalize Button -->
+    <div class="mt-4 pt-3 border-top text-end">
+       <button class="btn btn-success btn-lg px-5 shadow-sm rounded-pill" 
+               (click)="submitAllAndComplete()" 
+               [disabled]="consultationForm.invalid">
+          <i class="fas fa-save me-2"></i> Save Details & Complete Consultation
+       </button>
+    </div>
+
+  </div>
+</div>

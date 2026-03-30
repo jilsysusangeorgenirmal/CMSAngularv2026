@@ -1,0 +1,147 @@
+<app-header></app-header>
+
+<div class="history-container py-4 bg-light min-vh-100">
+  <div class="container-fluid px-4">
+    <!-- Header row -->
+    <div class="row mb-4">
+      <div class="col-12 d-flex justify-content-between align-items-center">
+        <div>
+           <h2 class="fw-bold text-dark mb-1"><i class="fas fa-history text-primary me-2"></i> Consultation History</h2>
+           <p class="text-muted mb-0">Review past patient consultations, diagnoses, and prescriptions.</p>
+        </div>
+        <div>
+           <a [routerLink]="['/auth/doctor']" class="btn btn-outline-secondary rounded-pill px-4 shadow-sm">
+             <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
+           </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loader -->
+    <div class="d-flex justify-content-center py-5" *ngIf="isLoading">
+       <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+       </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="alert alert-info shadow-sm" *ngIf="!isLoading && historyRecords.length === 0">
+       <i class="fas fa-info-circle me-2"></i> No consultation history found.
+    </div>
+
+    <!-- History Table -->
+    <div class="table-responsive shadow-sm rounded bg-white" *ngIf="!isLoading && historyRecords.length > 0">
+      <table class="table table-hover mb-0 align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Patient Name</th>
+            <th>Date</th>
+            <th>Diagnosis</th>
+            <th>Symptoms</th>
+            <th>Advice</th>
+            <th class="text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let record of historyRecords">
+            <td class="fw-bold text-dark">
+              {{ record.appointment?.patient?.firstName || record.Appointment?.Patient?.FirstName }} {{ record.appointment?.patient?.lastName || record.Appointment?.Patient?.LastName }}
+            </td>
+            <td class="text-muted fw-medium">{{ (record.createdOn || record.CreatedOn) | date:'dd-MMM-yyyy' }}</td>
+            <td><span class="badge bg-info text-dark rounded-pill px-3 py-2">{{ record.diagnosis || record.Diagnosis }}</span></td>
+            <td class="text-secondary">{{ record.symptoms || record.Symptoms }}</td>
+            <td class="text-secondary">{{ record.advice || record.Advice }}</td>
+            <td class="text-center">
+               <button class="btn btn-sm btn-outline-primary shadow-sm rounded-pill px-3" (click)="viewHistory(record)">
+                  <i class="fas fa-history me-1"></i> View History
+               </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+  </div>
+</div>
+
+<!-- Extra History Modal -->
+<div class="modal-backdrop fade show" *ngIf="showHistoryModal"></div>
+<div class="modal fade show d-block" tabindex="-1" *ngIf="showHistoryModal" role="dialog" aria-modal="true" style="background-color: rgba(0,0,0,0.5);">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content shadow-lg border-0 rounded-4">
+      <div class="modal-header bg-primary text-white border-bottom-0 pb-3 rounded-top-4">
+        <h5 class="modal-title fw-bold"><i class="fas fa-user-clock me-2"></i> Patient: {{ selectedPatientName }}</h5>
+        <button type="button" class="btn-close btn-close-white shadow-none" (click)="closeHistoryModal()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4 bg-light min-vh-50">
+        
+        <!-- Loader -->
+        <div class="d-flex justify-content-center py-5" *ngIf="isHistoryLoading">
+           <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+           </div>
+        </div>
+
+        <!-- Empty State -->
+        <div class="alert alert-warning shadow-sm" *ngIf="!isHistoryLoading && selectedPatientHistory?.length === 0">
+           <i class="fas fa-exclamation-triangle me-2"></i> No previous consultation history found for this patient.
+        </div>
+
+        <!-- History Content -->
+        <div class="table-responsive shadow-sm rounded bg-white" *ngIf="!isHistoryLoading && (selectedPatientHistory?.length ?? 0) > 0">
+          <table class="table table-hover mb-0 align-middle">
+            <thead class="table-light">
+              <tr>
+                <th style="width: 12%">Date</th>
+                <th style="width: 15%">Diagnosis</th>
+                <th style="width: 18%">Symptoms</th>
+                <th style="width: 15%">Advice</th>
+                <th style="width: 25%">Medicines</th>
+                <th style="width: 15%">Lab Tests</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let r of selectedPatientHistory">
+                <td class="text-muted fw-bold align-top">{{ (r.createdOn || r.CreatedOn) | date:'dd-MMM-yyyy' }}</td>
+                <td class="align-top"><span class="badge bg-info text-dark px-2 py-1">{{ r.diagnosis || r.Diagnosis }}</span></td>
+                <td class="align-top text-secondary small">{{ r.symptoms || r.Symptoms }}</td>
+                <td class="align-top text-secondary small">{{ r.advice || r.Advice }}</td>
+                
+                <!-- Medicines -->
+                <td class="align-top border-start">
+                   <ng-container *ngIf="(r.medicinePrescriptions || r.MedicinePrescriptions)?.length > 0; else noMeds">
+                     <ul class="list-unstyled mb-0">
+                        <li *ngFor="let m of (r.medicinePrescriptions || r.MedicinePrescriptions)" class="mb-2 pb-2 border-bottom border-light w-100 float-start">
+                           <strong class="text-success"><i class="fas fa-pills me-1"></i> {{ m.medicine?.medicineName || m.Medicine?.MedicineName || getMedName(m.medicineId || m.MedicineId) }}</strong> 
+                           <span class="badge bg-light border text-dark ms-2">{{ m.dosage || m.Dosage }}</span>
+                           <small class="d-block text-muted mt-1">{{ m.duration || m.Duration }} <span *ngIf="m.instructions || m.Instructions">| {{ m.instructions || m.Instructions }}</span></small>
+                        </li>
+                     </ul>
+                   </ng-container>
+                   <ng-template #noMeds><span class="text-muted fst-italic">None</span></ng-template>
+                </td>
+                
+                <!-- Lab Tests -->
+                <td class="align-top border-start">
+                   <ng-container *ngIf="(r.labTestPrescriptions || r.LabTestPrescriptions)?.length > 0; else noTests">
+                     <ul class="list-unstyled mb-0">
+                        <li *ngFor="let t of (r.labTestPrescriptions || r.LabTestPrescriptions)" class="mb-2 text-secondary small">
+                           <strong class="text-primary"><i class="fas fa-flask me-1"></i> {{ t.labTest?.testName || t.LabTest?.TestName || getTestName(t.labTestId || t.LabTestId) }}</strong>
+                           <div *ngIf="t.notes || t.Notes" class="mt-1 text-muted fst-italic">- {{ t.notes || t.Notes }}</div>
+                        </li>
+                     </ul>
+                   </ng-container>
+                   <ng-template #noTests><span class="text-muted fst-italic">None</span></ng-template>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+      <div class="modal-footer border-top-0 bg-white rounded-bottom-4">
+        <button type="button" class="btn btn-secondary rounded-pill px-4" (click)="closeHistoryModal()">Close Tab</button>
+      </div>
+    </div>
+  </div>
+</div>

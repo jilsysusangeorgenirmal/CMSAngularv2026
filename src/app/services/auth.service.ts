@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Staff } from '../models/staff';
 
@@ -18,15 +18,27 @@ export class AuthService {
   public loginVerify(staff:Staff):Observable<any>{
 
     //Call WebAPI for checking UserName and Password
-    return this.httpClient.get<Staff>(environment.apiUrl + 'Logins/' + staff.username + '/' + staff.password);
+    return this.httpClient.get<any>(environment.apiUrl + 'Logins/' + staff.username + '/' + staff.password)
+      .pipe(
+        tap((response: any) => {
+          if (response && response.token) {
+             this.saveAuthData(response);
+          }
+        })
+      );
+  }
 
+  public saveAuthData(response: any) {
+    localStorage.setItem('USER_NAME', response.uName);
+    localStorage.setItem('ACCESS_ROLE', response.roleId.toString());
+    localStorage.setItem('JWT_TOKEN', response.token);
   }
 
   //2-Logout functionaloity
   public logOutWithClearKeyValues(){
     //clear all sessions and localstorage keys
     localStorage.removeItem('USER_NAME');
-    localStorage.removeItem("ACCESS_Role");
+    localStorage.removeItem("ACCESS_ROLE");
     localStorage.removeItem("JWT_TOKEN");
 
     //redirect to Login
@@ -36,6 +48,5 @@ export class AuthService {
   //3- Check if the User is currently logged in
   isLoggedIn():boolean{
     return localStorage.getItem('USER_NAME') !== null;
-
   }
 }

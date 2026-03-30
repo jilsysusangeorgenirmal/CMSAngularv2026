@@ -36,6 +36,10 @@ export const routes: Routes = [
          canActivate:[authGuard],
         data:{role: '2'}
       },      //Doctor
+      {path:'doctor/history', component: ConsultationHistory,
+         canActivate:[authGuard],
+        data:{role: '2'}
+      },      //Doctor History
       {path:'labtechnician', component: LabtechnicianDashboard,
          canActivate:[authGuard],
         data:{role: '4'}
