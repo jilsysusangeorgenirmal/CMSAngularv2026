@@ -5,6 +5,7 @@ import { ReceptionistDashboard } from './auth/receptionist-dashboard/receptionis
 import { DoctorDashboard } from './auth/doctor-dashboard/doctor-dashboard';
 import { LabtechnicianDashboard } from './auth/labtechnician-dashboard/labtechnician-dashboard';
 import { Notfound } from './auth/notfound/notfound';
+import { ConsultationHistory } from './doctor/consultation-history/consultation-history';
 
 
 export const routes: Routes = [
@@ -28,6 +29,10 @@ export const routes: Routes = [
          canActivate:[authGuard],
         data:{role: '2'}
       },      //Doctor
+      {path:'doctor/history', component: ConsultationHistory,
+         canActivate:[authGuard],
+        data:{role: '2'}
+      },      //Doctor History
       {path:'labtechnician', component: LabtechnicianDashboard,
          canActivate:[authGuard],
         data:{role: '4'}

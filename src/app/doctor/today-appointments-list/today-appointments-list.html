@@ -1,0 +1,76 @@
+<div class="dashboard-panel">
+  <div class="panel-header d-flex justify-content-between align-items-center mb-4">
+    <h3 class="mb-0 text-primary fw-bold"><i class="fas fa-calendar-alt me-2"></i> Today's Appointments</h3>
+    <div class="search-box">
+      <div class="input-group">
+        <span class="input-group-text bg-white bg-transparent border-end-0"><i
+            class="fas fa-search text-muted"></i></span>
+        <input type="search" placeholder="Search patient..." class="form-control border-start-0"
+          [(ngModel)]="searchTerm" />
+      </div>
+    </div>
+  </div>
+
+  <div class="table-responsive shadow-sm rounded bg-white">
+    <table class="table table-hover mb-0 align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>Patient Name</th>
+          <th>Token</th>
+          <th>Time</th>
+          <th>Status</th>
+          <th>Age</th>
+          <th>Gender</th>
+          <th class="text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let a of filteredAppointments | paginate:{itemsPerPage:itemsPerPage,currentPage:p}">
+          <td>
+            <div class="d-flex align-items-center">
+              <div
+                class="avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3"
+                style="width: 35px; height: 35px;">
+                {{ (a.patient?.firstName || a.Patient?.FirstName || 'P')[0] | uppercase }}
+              </div>
+              <div>
+                <div class="fw-bold text-dark">{{ a.patient?.firstName || a.Patient?.FirstName }} {{ a.patient?.lastName
+                  || a.Patient?.LastName }}</div>
+              </div>
+            </div>
+          </td>
+          <td><span class="badge bg-secondary rounded-pill px-3">{{ a.tokenNo || a.TokenNo }}</span></td>
+          <td class="fw-medium">{{ a.appointmentTime || a.AppointmentTime }}</td>
+          <td>
+            <span class="badge" [ngClass]="{
+              'bg-warning text-dark': (a.status || a.Status) === 'Booked' || (a.status || a.Status) === 'Scheduled',
+              'bg-success': (a.status || a.Status) === 'Completed',
+              'bg-info text-dark': (a.status || a.Status) === 'InProgress'
+            }">{{ (a.status || a.Status) || 'Scheduled' }}</span>
+          </td>
+          <td>{{ a.patient?.age || a.Patient?.Age }}</td>
+          <td>{{ a.patient?.gender || a.Patient?.Gender }}</td>
+          <td class="text-center">
+            <button class="btn btn-sm btn-outline-primary shadow-sm me-2 rounded-pill px-3"
+              (click)="startConsultation(a)" *ngIf="(a.status || a.Status) !== 'Completed'">
+              <i class="fas fa-stethoscope"></i> Consult
+            </button>
+            <button class="btn btn-sm btn-outline-success shadow-sm me-2 rounded-pill px-3"
+              (click)="startConsultation(a)" *ngIf="(a.status || a.Status) === 'Completed'">
+              <i class="fas fa-edit"></i> Edit / View
+            </button>
+            <span *ngIf="(a.status || a.Status) === 'Completed'" class="text-success fw-bold"><i
+                class="fas fa-check-circle"></i> Done</span>
+          </td>
+        </tr>
+        <tr *ngIf="filteredAppointments?.length === 0">
+          <td colspan="7" class="text-center py-4 text-muted">No appointments found for today.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="d-flex justify-content-end mt-4">
+    <pagination-controls (pageChange)="p=$event" class="my-pagination"></pagination-controls>
+  </div>
+</div>
