@@ -35,4 +35,9 @@ export interface ConsultationHistory {
     createdOn: string;
     labTests: any[];
     medicines: any[];
+    patientName?: string;
+    patientId?: number;
+    PatientId?: number;
+    appointment?: any;
+    Appointment?: any;
 }

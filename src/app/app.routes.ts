@@ -13,6 +13,7 @@ import { Appointment } from './models/appointment';
 import { AppointmentList } from './appointments/appointment-list/appointment-list';
 import { AppointmentAdd } from './appointments/appointment-add/appointment-add';
 import { AppointmentEdit } from './appointments/appointment-edit/appointment-edit';
+import { ConsultationHistory } from './doctor/consultation-history/consultation-history';
 
 
 export const routes: Routes = [

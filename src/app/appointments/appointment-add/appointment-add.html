@@ -33,7 +33,7 @@
              name="AppointmentDate"
              #AppointmentDate="ngModel"
              [(ngModel)]="appointment.AppointmentDate"
-             (change)="updateTimeSlots()"
+             (change)="appointment.DoctorId = 0; appointment.AppointmentTime = ''; updateTimeSlots()"
              class="form-control w-25"
              required
              [min]="minDate"
@@ -56,6 +56,8 @@
       <label class="fw-semibold">Doctor:</label>
       <select name="DoctorId" id="DoctorId" #DoctorId="ngModel"
              [(ngModel)]="appointment.DoctorId" class="form-control fw-bold w-25"
+             (change)="appointment.AppointmentTime = ''"
+             [disabled]="!appointment.AppointmentDate"
              [ngClass]="{'is-invalid': (DoctorId.touched || appointmentForm.submitted) && (DoctorId.invalid || appointment.DoctorId == 0)}" required>
             <option value="0">---Select Doctor---</option>
             <option *ngFor="let doc of appointmentService.doctors" 
@@ -76,6 +78,7 @@
               [(ngModel)]="appointment.AppointmentTime"
               class="form-control fw-bold w-25"
               required
+              [disabled]="!appointment.DoctorId || appointment.DoctorId == 0"
               [ngClass]="{'is-invalid': (AppointmentTime.touched || appointmentForm.submitted) && AppointmentTime.invalid}">
         <option value="" disabled selected>-- Select Time --</option>
         <option *ngFor="let slot of timeSlots" [value]="slot.value" [disabled]="slot.disabled">

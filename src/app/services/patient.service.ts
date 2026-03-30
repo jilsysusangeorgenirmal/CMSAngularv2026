@@ -33,6 +33,11 @@ export class PatientService {
     });
   }
 
+  // Helper method for combining observables
+  getPatientsData(): Observable<any[]> {
+    return this.httpClient.get<any[]>(environment.apiUrl + 'Patient');
+  }
+
   //3-Insert Patient
   insertPatient(patient:Patient):Observable<any> {
     return this.httpClient.post(environment.apiUrl + 'Patient', patient);

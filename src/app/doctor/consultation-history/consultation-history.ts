@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { DoctorService } from '../../services/doctor.service';
+import { AppointmentService } from '../../services/appointment.service';
+import { PatientService } from '../../services/patient.service';
 import { Header } from '../../auth/header/header';
 
 @Component({
@@ -45,7 +47,11 @@ export class ConsultationHistory implements OnInit {
     { id: 1206, name: 'Kidney Function Test' }
   ];
 
-  constructor(private doctorService: DoctorService) {}
+  constructor(
+    private doctorService: DoctorService,
+    private appointmentService: AppointmentService,
+    private patientService: PatientService
+  ) {}
 
   getMedName(id: any): string {
      const match = this.availableMedicines.find(m => m.id == id);
@@ -57,19 +63,61 @@ export class ConsultationHistory implements OnInit {
      return match ? match.name : 'Unknown Test';
   }
 
-  private getDoctorId(): number {
-    const user = localStorage.getItem('USER_NAME')?.toLowerCase();
+  private getDoctorId(doctors: any[]): number {
+    const user = localStorage.getItem('USER_NAME')?.toLowerCase() || '';
+    const nameMatch = user.replace('.doc', '').trim();
+    
+    const matchedDoc = doctors.find(d => d.Name.toLowerCase().includes(nameMatch));
+    if (matchedDoc) {
+       return matchedDoc.DoctorId;
+    }
+
     if (user === 'meera.doc') return 201;
     if (user === 'vivek.doc') return 202;
-    return 200; // arjun.doc or default
+    return 200; // fallback
   }
 
   ngOnInit(): void {
-    const doctorId = this.getDoctorId();
+    if (this.appointmentService.doctors.length === 0) {
+      this.appointmentService.getAllDoctors().subscribe({
+        next: (docs) => {
+          this.loadHistory(docs);
+        },
+        error: (err) => {
+          console.error(err);
+          this.isLoading = false;
+        }
+      });
+    } else {
+      this.loadHistory(this.appointmentService.doctors);
+    }
+  }
+
+  loadHistory(doctors: any[]) {
+    const doctorId = this.getDoctorId(doctors);
     this.doctorService.getConsultations(doctorId).subscribe({
       next: (data) => {
-        this.historyRecords = data;
-        this.isLoading = false;
+         // Join missing patient details from PatientService
+         this.patientService.getPatientsData().subscribe({
+            next: (patients: any[]) => {
+               data.forEach(r => {
+                  const appt = r.appointment || r.Appointment || {};
+                  const pid = r.patientId || r.PatientId || appt.patientId || appt.PatientId;
+                  if (pid) {
+                     const p = patients.find((x: any) => x.patientId === pid || x.PatientId === pid);
+                     if (p) {
+                        r.patientName = `${p.firstName || p.FirstName} ${p.lastName || p.LastName}`;
+                     }
+                  }
+               });
+               this.historyRecords = data;
+               this.isLoading = false;
+            },
+            error: () => {
+               this.historyRecords = data;
+               this.isLoading = false;
+            }
+         });
       },
       error: (err) => {
         console.error(err);
@@ -79,11 +127,11 @@ export class ConsultationHistory implements OnInit {
   }
 
   viewHistory(record: any): void {
-    const patient = record.appointment?.patient || record.Appointment?.Patient;
-    if (!patient) return;
+    const appt = record.appointment || record.Appointment || {};
+    const patientId = record.patientId || record.PatientId || appt.patientId || appt.PatientId;
+    if (!patientId) return;
     
-    const patientId = patient.patientId || patient.PatientId;
-    this.selectedPatientName = `${patient.firstName || patient.FirstName} ${patient.lastName || patient.LastName}`;
+    this.selectedPatientName = record.patientName || record.PatientName || 'Unknown Patient';
     
     this.showHistoryModal = true;
     this.isHistoryLoading = true;

@@ -31,11 +31,10 @@
               <div
                 class="avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3"
                 style="width: 35px; height: 35px;">
-                {{ (a.patient?.firstName || a.Patient?.FirstName || 'P')[0] | uppercase }}
+                {{ (a.patientName || a.PatientName || a.patient?.firstName || a.Patient?.FirstName || 'P')[0] | uppercase }}
               </div>
               <div>
-                <div class="fw-bold text-dark">{{ a.patient?.firstName || a.Patient?.FirstName }} {{ a.patient?.lastName
-                  || a.Patient?.LastName }}</div>
+                <div class="fw-bold text-dark">{{ a.patientName || a.PatientName || a.patient?.firstName || a.Patient?.FirstName }} <ng-container *ngIf="!(a.patientName || a.PatientName)">{{ a.patient?.lastName || a.Patient?.LastName }}</ng-container></div>
               </div>
             </div>
           </td>
@@ -48,8 +47,8 @@
               'bg-info text-dark': (a.status || a.Status) === 'InProgress'
             }">{{ (a.status || a.Status) || 'Scheduled' }}</span>
           </td>
-          <td>{{ a.patient?.age || a.Patient?.Age }}</td>
-          <td>{{ a.patient?.gender || a.Patient?.Gender }}</td>
+          <td>{{ a.age || a.Age || a.patient?.age || a.Patient?.Age || 'N/A' }}</td>
+          <td>{{ a.gender || a.Gender || a.patient?.gender || a.Patient?.Gender || 'N/A' }}</td>
           <td class="text-center">
             <button class="btn btn-sm btn-outline-primary shadow-sm me-2 rounded-pill px-3"
               (click)="startConsultation(a)" *ngIf="(a.status || a.Status) !== 'Completed'">

@@ -45,7 +45,7 @@
         <tbody>
           <tr *ngFor="let record of historyRecords">
             <td class="fw-bold text-dark">
-              {{ record.appointment?.patient?.firstName || record.Appointment?.Patient?.FirstName }} {{ record.appointment?.patient?.lastName || record.Appointment?.Patient?.LastName }}
+              {{ record.patientName || record.PatientName || record.appointment?.patient?.firstName || record.Appointment?.Patient?.FirstName }} <ng-container *ngIf="!(record.patientName || record.PatientName)">{{ record.appointment?.patient?.lastName || record.Appointment?.Patient?.LastName }}</ng-container>
             </td>
             <td class="text-muted fw-medium">{{ (record.createdOn || record.CreatedOn) | date:'dd-MMM-yyyy' }}</td>
             <td><span class="badge bg-info text-dark rounded-pill px-3 py-2">{{ record.diagnosis || record.Diagnosis }}</span></td>

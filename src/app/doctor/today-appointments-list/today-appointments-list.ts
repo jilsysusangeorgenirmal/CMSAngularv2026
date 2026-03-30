@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Output, OnInit } from '@angular/core';
 import { DoctorService } from '../../services/doctor.service';
+import { AppointmentService } from '../../services/appointment.service';
+import { PatientService } from '../../services/patient.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -22,24 +24,64 @@ export class TodayAppointmentsList implements OnInit {
 
   @Output() startConsultationEvent = new EventEmitter<any>();
 
-  constructor(private doctorService: DoctorService) { }
+  constructor(
+    private doctorService: DoctorService,
+    private appointmentService: AppointmentService,
+    private patientService: PatientService
+  ) { }
 
   ngOnInit(): void {
-    this.loadAppointments();
+    if (this.appointmentService.doctors.length === 0) {
+      this.appointmentService.getAllDoctors().subscribe({
+        next: (docs) => {
+          this.loadAppointments(docs);
+        },
+        error: (err) => console.error(err)
+      });
+    } else {
+      this.loadAppointments(this.appointmentService.doctors);
+    }
   }
 
-  private getDoctorId(): number {
-    const user = localStorage.getItem('USER_NAME')?.toLowerCase();
+  private getDoctorId(doctors: any[]): number {
+    const user = localStorage.getItem('USER_NAME')?.toLowerCase() || '';
+    const nameMatch = user.replace('.doc', '').trim();
+    
+    const matchedDoc = doctors.find(d => d.Name.toLowerCase().includes(nameMatch));
+    if (matchedDoc) {
+       return matchedDoc.DoctorId;
+    }
+
     if (user === 'meera.doc') return 201;
     if (user === 'vivek.doc') return 202;
-    return 200; // arjun.doc or default
+    return 200; // fallback
   }
 
-  loadAppointments() {
-    this.doctorService.getTodayAppointments(this.getDoctorId())
+  loadAppointments(doctors: any[]) {
+    const docId = this.getDoctorId(doctors);
+    this.doctorService.getTodayAppointments(docId)
       .subscribe({
         next: (data: any[]) => {
-          this.appointments = data;
+          // Join missing patient details from PatientService
+          this.patientService.getPatientsData().subscribe({
+             next: (patients: any[]) => {
+                data.forEach(a => {
+                   const pid = a.patientId || a.PatientId;
+                   if (pid) {
+                      const p = patients.find((x: any) => x.patientId === pid || x.PatientId === pid);
+                      if (p) {
+                         a.patientName = `${p.firstName || p.FirstName} ${p.lastName || p.LastName}`;
+                         a.age = p.age || p.Age;
+                         a.gender = p.gender || p.Gender;
+                      }
+                   }
+                });
+                this.appointments = data;
+             },
+             error: () => {
+                this.appointments = data;
+             }
+          });
         },
         error: (err: any) => {
           console.error(err);
@@ -53,6 +95,9 @@ export class TodayAppointmentsList implements OnInit {
     }
     const term = this.searchTerm.toLowerCase();
     return this.appointments.filter(a => {
+      const defaultName = (a.patientName || a.PatientName || '').toLowerCase();
+      if (defaultName.includes(term)) return true;
+
       const patient = a.patient || a.Patient;
       if (!patient) return false;
       
