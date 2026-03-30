@@ -38,7 +38,7 @@
              required
              [min]="minDate"
              [max]="maxDate"
-             [ngClass]="{'is-invalid': (AppointmentDate.touched || appointmentForm.submitted) && (AppointmentDate.invalid || isFutureDate(appointment.AppointmentDate))}" />
+             [ngClass]="{'is-invalid': (AppointmentDate.touched || appointmentForm.submitted) && (AppointmentDate.invalid || isFutureDate(appointment.AppointmentDate) || isBeforeDate(appointment.AppointmentDate))}" />
 
       <span class="text-danger" *ngIf="(AppointmentDate.touched || appointmentForm.submitted) && AppointmentDate.errors?.['required']">
         Appointment date is required
@@ -48,6 +48,9 @@
       </span>
       <span class="text-danger" *ngIf="(AppointmentDate.touched || appointmentForm.submitted) && isFutureDate(appointment.AppointmentDate)">
         Appointment date cannot be beyond tomorrow
+      </span>
+      <span class="text-danger" *ngIf="(AppointmentDate.touched || appointmentForm.submitted) && isBeforeDate(appointment.AppointmentDate)">
+        Appointment date cannot be before today
       </span>
     </div>
 

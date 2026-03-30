@@ -112,6 +112,13 @@ export class AppointmentAdd {
     return selectedDate > maxAllowed;
   }
 
+  isBeforeDate(date: any): boolean {
+    if (!date) return false;
+    const selectedDate = new Date(date);
+    const minAllowed = new Date(this.minDate);
+    return selectedDate < minAllowed;
+  }
+
   //Get all Doctors-- select dropdown box doctors names
   loadDoctors():void{
     if(this.appointmentService.doctors.length === 0){
@@ -128,6 +135,11 @@ export class AppointmentAdd {
 
     if (this.isFutureDate(this.appointment.AppointmentDate)) {
        this.toastr.warning('Appointment date cannot be beyond tomorrow!', 'Validation Failed');
+       return;
+    }
+
+    if (this.isBeforeDate(this.appointment.AppointmentDate)) {
+       this.toastr.warning('Appointment date cannot be before today!', 'Validation Failed');
        return;
     }
 
