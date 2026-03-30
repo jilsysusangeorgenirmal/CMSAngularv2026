@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DoctorService } from '../../services/doctor.service';
+import { AppointmentService } from '../../services/appointment.service';
 
 @Component({
   selector: 'app-consultation-form',
@@ -45,7 +46,7 @@ export class ConsultationForm implements OnInit {
     { id: 1206, name: 'Kidney Function Test' }
   ];
 
-  constructor(private fb: FormBuilder, private doctorService: DoctorService) {}
+  constructor(private fb: FormBuilder, private doctorService: DoctorService, private appointmentService: AppointmentService) {}
 
   ngOnInit(): void {
     if (this.appointment._state) {
@@ -78,21 +79,39 @@ export class ConsultationForm implements OnInit {
         // Populate if already completed and opened freshly
         const status = this.appointment.Status || this.appointment.status;
         if (status === 'Completed') {
-            this.loadExistingConsultation();
+            if (this.appointmentService.doctors.length === 0) {
+               this.appointmentService.getAllDoctors().subscribe(() => this.loadExistingConsultation());
+            } else {
+               this.loadExistingConsultation();
+            }
         }
     }
   }
 
   private getDoctorId(): number {
-    const user = localStorage.getItem('USER_NAME')?.toLowerCase();
+    const user = localStorage.getItem('USER_NAME')?.toLowerCase() || '';
+    const nameMatch = user.replace('.doc', '').trim();
+    
+    if (this.appointmentService.doctors && this.appointmentService.doctors.length > 0) {
+        const matchedDoc = this.appointmentService.doctors.find(d => d.Name.toLowerCase().includes(nameMatch));
+        if (matchedDoc) {
+           return matchedDoc.DoctorId;
+        }
+    }
+
     if (user === 'meera.doc') return 201;
     if (user === 'vivek.doc') return 202;
     return 200; // arjun.doc or default
   }
 
   loadExistingConsultation() {
-      const doctorId = this.getDoctorId();
-      this.doctorService.getConsultations(doctorId).subscribe({
+      const patientId = this.appointment.PatientId || this.appointment.patientId;
+      if (!patientId) {
+          console.error("No patientId available to fetch full consultation history.");
+          return;
+      }
+
+      this.doctorService.getPatientHistory(patientId).subscribe({
          next: (data: any[]) => {
             const apptId = this.appointment.AppointmentId || this.appointment.appointmentId;
             const existing = data.find((c: any) => c.appointmentId === apptId || c.AppointmentId === apptId);
@@ -106,11 +125,17 @@ export class ConsultationForm implements OnInit {
                 });
 
                 // Populate Medicines
-                const meds = existing.medicines || existing.Medicines;
+                const meds = existing.medicinePrescriptions || existing.MedicinePrescriptions || existing.medicines || existing.Medicines;
                 if (meds && Array.isArray(meds)) {
+                    // Clear empty array first if any
+                    while (this.medicinesArray.length) {
+                       this.medicinesArray.removeAt(0);
+                    }
                     meds.forEach((m: any) => {
+                       const medIdRaw = m.medicineId || m.MedicineId;
+                       const medId = medIdRaw ? Number(medIdRaw) : '';
                        const medGroup = this.fb.group({
-                          medicineId: [m.medicineId || m.MedicineId || '', Validators.required],
+                          medicineId: [medId, Validators.required],
                           dosage: [m.dosage || m.Dosage || '', Validators.required],
                           duration: [m.duration || m.Duration || '', Validators.required],
                           instructions: [m.instructions || m.Instructions || '']
@@ -120,11 +145,17 @@ export class ConsultationForm implements OnInit {
                 }
 
                 // Populate Lab Tests
-                const tests = existing.labTests || existing.LabTests || existing.labtests || existing.Labtests;
+                const tests = existing.labTestPrescriptions || existing.LabTestPrescriptions || existing.labTests || existing.LabTests || existing.labtests || existing.Labtests;
                 if (tests && Array.isArray(tests)) {
+                    // Clear empty array first if any
+                    while (this.testsArray.length) {
+                       this.testsArray.removeAt(0);
+                    }
                     tests.forEach((t: any) => {
+                       const testIdRaw = t.labTestId || t.LabTestId;
+                       const testId = testIdRaw ? Number(testIdRaw) : '';
                        const testGroup = this.fb.group({
-                          labTestId: [t.labTestId || t.LabTestId || '', Validators.required],
+                          labTestId: [testId, Validators.required],
                           notes: [t.notes || t.Notes || '']
                        });
                        this.testsArray.push(testGroup);

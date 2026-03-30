@@ -57,15 +57,40 @@
                    <option *ngFor="let m of availableMedicines" [ngValue]="m.id">{{ m.name }}</option>
                 </select>
               </div>
-              <div class="col-md-2">
+              <div class="col-md-3">
                 <label>Dosage</label>
-                <input type="text" formControlName="dosage" class="form-control" placeholder="e.g. 500mg">
+                <select formControlName="dosage" class="form-select">
+                   <option value="" disabled>Select Dosage...</option>
+                   <optgroup label="Tablets / Capsules">
+                     <option value="1-1-1">1-1-1 (Morning, Afternoon, Night)</option>
+                     <option value="1-0-1">1-0-1 (Morning, Night)</option>
+                     <option value="0-0-1">0-0-1 (Night only)</option>
+                     <option value="1-0-0">1-0-0 (Morning only)</option>
+                     <option value="1-1-0">1-1-0 (Morning, Afternoon)</option>
+                     <option value="SOS">SOS (When required)</option>
+                   </optgroup>
+                   <optgroup label="Syrups / Liquids">
+                     <option value="2.5ml">2.5 ml</option>
+                     <option value="5ml">5 ml</option>
+                     <option value="10ml">10 ml</option>
+                     <option value="15ml">15 ml</option>
+                     <option value="20ml">20 ml</option>
+                   </optgroup>
+                   <optgroup label="Injections / Others">
+                     <option value="1 Vial">1 Vial</option>
+                     <option value="1 Ampule">1 Ampule</option>
+                     <option value="2 Units">2 Units</option>
+                     <option value="5 Units">5 Units</option>
+                     <option value="10 Units">10 Units</option>
+                     <option value="1 Application">1 Application</option>
+                   </optgroup>
+                </select>
               </div>
               <div class="col-md-2">
                 <label>Duration</label>
                 <input type="text" formControlName="duration" class="form-control" placeholder="e.g. 3 days">
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <label>Instructions</label>
                 <select formControlName="instructions" class="form-select">
                   <option value="" disabled>Select Instruction...</option>
