@@ -1,0 +1,176 @@
+/* Appointment List - Professional Clinical Theme */
+
+.appointment-list-container {
+    padding: 2.5rem 1.5rem;
+    max-width: 1440px;
+    margin: 0 auto;
+    background-color: #f8fafc;
+    min-height: calc(100vh - 60px);
+}
+
+.card {
+    background: white;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.list-header {
+    padding: 1.5rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    border-bottom: 1px solid #f1f5f9;
+    background: white;
+}
+
+.search-group {
+    flex: 1;
+    max-width: 500px;
+}
+
+.input-group-modern {
+    display: flex;
+    background: #f1f5f9;
+    border-radius: 12px;
+    padding: 8px 16px;
+    align-items: center;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.input-group-modern:focus-within {
+    background: white;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.search-input {
+    background: transparent;
+    border: none;
+    padding: 8px 12px;
+    flex: 1;
+    font-size: 0.95rem;
+    color: #1e293b;
+    outline: none;
+}
+
+.search-icon {
+    color: #94a3b8;
+}
+
+/* Table Styles */
+.table-responsive {
+    overflow-x: auto;
+}
+
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.custom-table th {
+    background: #f1f5f9;
+    padding: 1.25rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #64748b;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: left;
+}
+
+.custom-table td {
+    padding: 1.25rem 1rem;
+    font-size: 0.9rem;
+    color: #334155;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+}
+
+.custom-table tr:hover td {
+    background-color: #f8fafc;
+}
+
+/* Status Badges */
+.badge {
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.status-scheduled { background: #eff6ff; color: #3b82f6; border: 1px solid #dbeafe; }
+.status-confirmed { background: #f0fdf4; color: #16a34a; border: 1px solid #dcfce7; }
+.status-cancelled { background: #fef2f2; color: #dc2626; border: 1px solid #fee2e2; }
+.status-default { background: #f8fafc; color: #64748b; border: 1px solid #e2e8f0; }
+
+/* Action Buttons */
+.action-btn-group {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-icon {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    background: white;
+    border: 1px solid #e2e8f0;
+}
+
+.btn-edit { color: #0ea5e9; }
+.btn-edit:hover { background: #f0f9ff; border-color: #0ea5e9; }
+
+.btn-cancel { color: #f43f5e; }
+.btn-cancel:hover { background: #fff1f2; border-color: #f43f5e; }
+
+.btn-bill { color: #8b5cf6; }
+.btn-bill:hover { background: #f5f3ff; border-color: #8b5cf6; }
+
+/* Code Labels */
+.apt-code {
+    font-weight: 700;
+    color: #1e293b;
+    background: #f1f5f9;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+}
+
+.patient-name {
+    font-weight: 600;
+    color: #0f172a;
+}
+
+/* Pagination Overrides */
+::ng-deep .ngx-pagination {
+    margin: 2rem 0 !important;
+    display: flex !important;
+    justify-content: center !important;
+}
+
+::ng-deep .ngx-pagination .current {
+    background: #3b82f6 !important;
+    border-radius: 8px !important;
+}
+
+::ng-deep .ngx-pagination a:hover {
+    background: #f1f5f9 !important;
+    border-radius: 8px !important;
+}
+
+/* Specific alignments */
+.text-center { text-align: center; }
+.text-right { text-align: right; }

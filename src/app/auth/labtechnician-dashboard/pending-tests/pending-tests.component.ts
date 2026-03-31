@@ -7,15 +7,18 @@ import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { PdfGeneratorService } from '../../../services/pdf-generator.service';
 
+import { FormsModule } from '@angular/forms';
+
 @Component({
   selector: 'app-pending-tests',
   standalone: true,
-  imports: [CommonModule, AddResultModalComponent],
+  imports: [CommonModule, AddResultModalComponent, FormsModule],
   templateUrl: './pending-tests.component.html',
   styleUrls: ['./pending-tests.component.css']
 })
 export class PendingTestsComponent implements OnInit {
   pendingPrescriptions: PendingPrescriptionDto[] = [];
+  searchTerm: string = '';
   isLoading = false;
   
   showAddResultModal = false;
@@ -29,6 +32,16 @@ export class PendingTestsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadPendingPrescriptions();
+  }
+
+  get filteredPrescriptions() {
+    if (!this.searchTerm) return this.pendingPrescriptions;
+    const term = this.searchTerm.toLowerCase();
+    return this.pendingPrescriptions.filter(p => 
+      p.PatientName.toLowerCase().includes(term) || 
+      p.TestName.toLowerCase().includes(term) ||
+      p.DoctorName.toLowerCase().includes(term)
+    );
   }
 
   loadPendingPrescriptions() {
@@ -83,7 +96,7 @@ export class PendingTestsComponent implements OnInit {
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes, generate bill!',
         cancelButtonText: 'No, later'
-      }).then((result) => {
+      }).then((result:any) => {
         if (result.isConfirmed) {
           this.generateBill(currentPrescriptionId, true);
         }
@@ -110,7 +123,7 @@ export class PendingTestsComponent implements OnInit {
             cancelButtonColor: '#6c757d',
             confirmButtonText: 'Yes, Download PDF',
             cancelButtonText: 'Close'
-          }).then((res) => {
+          }).then((res: any) => {
             if (res.isConfirmed) {
               this.downloadPdfReport(prescriptionId);
             }
@@ -135,7 +148,7 @@ export class PendingTestsComponent implements OnInit {
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes, generate it!'
-      }).then((result) => {
+      }).then((result: any) => {
         if (result.isConfirmed) {
           doGenerate();
         }

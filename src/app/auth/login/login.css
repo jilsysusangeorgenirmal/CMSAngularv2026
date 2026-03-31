@@ -1,1 +1,185 @@
-/* Reverted to empty CSS */
+/* Login Page Styles - Professional Clinical Theme */
+
+:host {
+    display: block;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.login-page-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.login-card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: row;
+}
+
+/* Left side - Welcome Section */
+.welcome-section {
+    background: #1a73e8;
+    color: #ffffff;
+    padding: 40px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.welcome-section h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.welcome-section p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 24px;
+    opacity: 0.9;
+}
+
+.welcome-features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.welcome-features li {
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    font-size: 0.95rem;
+}
+
+.welcome-features li i {
+    margin-right: 12px;
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
+/* Right side - Login Form Section */
+.form-section {
+    padding: 50px;
+    flex: 1;
+    background: #ffffff;
+}
+
+.logo-container {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.logo-container img {
+    max-width: 60px;
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.form-header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 8px;
+}
+
+.form-header p {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+}
+
+.form-group {
+    margin-bottom: 24px;
+    position: relative;
+}
+
+.input-icon {
+    position: absolute;
+    left: 15px;
+    top: 14px;
+    color: #95a5a6;
+}
+
+.form-control {
+    padding: 12px 15px 12px 45px;
+    border: 1px solid #dfe6e9;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #1a73e8;
+    box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+    outline: none;
+}
+
+.btn-login {
+    background: #1a73e8;
+    color: #ffffff;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    width: 100%;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.btn-login:hover {
+    background: #1557b0;
+}
+
+.text-danger {
+    font-size: 0.8rem;
+    margin-top: 5px;
+    display: block;
+}
+
+.errorMessage-box {
+    background-color: #fff5f5;
+    border: 1px solid #feb2b2;
+    color: #c53030;
+    padding: 10px;
+    border-radius: 6px;
+    margin-top: 20px;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .login-card {
+        flex-direction: column;
+        max-width: 450px;
+    }
+    
+    .welcome-section {
+        padding: 30px;
+        text-align: center;
+    }
+    
+    .welcome-features {
+        display: none; /* Hide features on mobile for compactness */
+    }
+    
+    .form-section {
+        padding: 30px;
+    }
+}

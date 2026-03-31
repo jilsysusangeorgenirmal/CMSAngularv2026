@@ -9,7 +9,7 @@ import { CompletedTestsComponent } from './completed-tests/completed-tests.compo
 
 @Component({
   selector: 'app-labtechnician-dashboard',
-  imports: [Header, RouterLink, CommonModule, PendingTestsComponent, LabTestsComponent, LabCategoriesComponent, CompletedTestsComponent],
+  imports: [Header, CommonModule, PendingTestsComponent, LabTestsComponent, LabCategoriesComponent, CompletedTestsComponent],
   templateUrl: './labtechnician-dashboard.html',
   styleUrl: './labtechnician-dashboard.css',
 })

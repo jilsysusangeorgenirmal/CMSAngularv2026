@@ -1,87 +1,85 @@
-<div class="container mt-5">
-    <div class="row align-items-cenetr">
-        <!--Left Side: EMS Profile Content-->
-        <div class="col-lg-6 d-flex align-items-center">
-            <div class="d-flex flex-row align-items-start w-100">
-                <!--Logo-->
-                <img src="assets/faith.png" alt="EMS Logo"
-                class="me-3" style="max-width:70px;">
-                <!--Welcome Text-->
-                <div>
-                    <h1 class="mb-3">&nbsp;&nbsp;&nbsp;Welcome to <br>Wellness Clinic CMS</h1>
-                    <p class="mb-3">
-                        Wellness Clinic Management System helps efficiently 
-                        manage patients, appointments, billing, and clinic workflow —
-                        all in one secure platform.
-                    </p>
-                    <ul>
-                        <li>Manage Clinical records</li>
-                        <li>Track department functionality metrics</li>
-                        <li>Generate insigthful reports</li>
-                    </ul>
-                </div>
+<div class="login-page-wrapper">
+    <div class="login-card">
+        <!--Left Side: Welcome Section-->
+        <div class="welcome-section">
+            <div class="logo-container d-lg-none mb-4">
+                <img src="assets/faith.png" alt="CMS Logo">
             </div>
-            
+            <h1>Welcome to Wellness Clinic CMS</h1>
+            <p>
+                A unified, secure platform for efficient patient management, 
+                streamlined clinical workflows, and advanced reporting.
+            </p>
+            <ul class="welcome-features">
+                <li><i class="fas fa-check-circle"></i> Secure Clinical Records</li>
+                <li><i class="fas fa-check-circle"></i> Comprehensive Billing</li>
+                <li><i class="fas fa-check-circle"></i> Insights and Analytics</li>
+            </ul>
         </div>
         
-         <!--Right side: Login Form-->
-        <div class="col-lg-6">
-             <!--Login Form-->
-             <div class="card shadow-sm">
-                <div class="card-body">
-                    <h4 class="card-title text-center">Enter your Credentials</h4>
-                    <hr>
-                    <!--Login Form-->
-                    <form [formGroup]="loginForm" (ngSubmit)="checkLoginCredentials()">
-                        <!--UserName-->
-                        <div class="form-group">
-                            <input type="text" placeholder="Enter User Name" maxlength="20"
-                            formControlName="username" class="form-control">
-                            <br>
-
-                            <!--Validation Message-->
-                            <span class="text-danger"
-                                *ngIf="isSubmitted && getAllformControls['username'].errors?.['required']">
-                                User Name is invalid or required
-                            </span>
-                            <!--Pattern-->
-                            <span class="text-danger"
-                                *ngIf="isSubmitted && getAllformControls['username'].errors?.['pattern']">
-                                User Name must be 3-20 charcters, only letters, numbers, underscore
-                            </span>
-                        </div>
-
-                        <!--Password-->
-                        <div class="form-group">
-                            <input type="password" placeholder="Enter password" maxlength="20"
-                            formControlName="password" class="form-control">
-                            <br>
-
-                            <!--Validation Message-->
-                            <span class="text-danger"
-                                *ngIf="isSubmitted && getAllformControls['password'].errors?.['required']">
-                                Password is invalid or required
-                            </span>
-                            <!--Pattern-->
-                            <span class="text-danger"
-                                *ngIf="isSubmitted && getAllformControls['password'].errors?.['pattern']">
-                                Password must be 3-8 characters, only letters, numbers, @ symbol
-                            </span>
-                        </div>
-                        <!--Submit Button-->
-                        <div>
-                            <button type="submit"
-                            class="btn btn-lg btn-primary form-control">Login</button>
-
-                        </div>
-                        <!--Error Message-->
-                        <div class="text-danger"*ngIf="errorMessage">{{errorMessage}}
-                        </div>
-
-                    </form>
+        <!--Right side: Login Form-->
+        <div class="form-section">
+            <div class="logo-container d-none d-lg-block">
+                <img src="assets/faith.png" alt="CMS Logo">
+            </div>
+            
+            <div class="form-header">
+                <h2>Provider Login</h2>
+                <p>Welcome back! Please enter your credentials.</p>
+            </div>
+            
+            <!--Login Form Section-->
+            <form [formGroup]="loginForm" (ngSubmit)="checkLoginCredentials()">
+                <!--UserName-->
+                <div class="form-group mb-4 position-relative">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" placeholder="User Name" maxlength="20"
+                    formControlName="username" class="form-control" autocomplete="username">
+                    
+                    <!--Validation Message-->
+                    <span class="text-danger"
+                        *ngIf="isSubmitted && getAllformControls['username'].errors?.['required']">
+                        <i class="fas fa-exclamation-circle me-1"></i> User Name is required
+                    </span>
+                    <!--Pattern-->
+                    <span class="text-danger"
+                        *ngIf="isSubmitted && getAllformControls['username'].errors?.['pattern']">
+                        <i class="fas fa-exclamation-triangle me-1"></i> 3-20 characters, only letters, numbers, underscores
+                    </span>
                 </div>
-             </div>
+
+                <!--Password-->
+                <div class="form-group mb-4 position-relative">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" placeholder="Password" maxlength="20"
+                    formControlName="password" class="form-control" autocomplete="current-password">
+                    
+                    <!--Validation Message-->
+                    <span class="text-danger"
+                        *ngIf="isSubmitted && getAllformControls['password'].errors?.['required']">
+                        <i class="fas fa-exclamation-circle me-1"></i> Password is required
+                    </span>
+                    <!--Pattern-->
+                    <span class="text-danger"
+                        *ngIf="isSubmitted && getAllformControls['password'].errors?.['pattern']">
+                        <i class="fas fa-exclamation-triangle me-1"></i> 3-8 characters, letters/numbers/@ allowed
+                    </span>
+                </div>
+
+                <!--Submit Button-->
+                <div class="mt-4 pt-2">
+                    <button type="submit" [disabled]="isLoading"
+                    class="btn btn-login">
+                       <span *ngIf="!isLoading">Login</span>
+                       <span *ngIf="isLoading"><i class="fas fa-spinner fa-spin me-2"></i>Logging in...</span>
+                    </button>
+                </div>
+                
+                <!--Error Message-->
+                <div class="errorMessage-box"*ngIf="errorMessage">
+                    <i class="fas fa-times-circle me-1"></i> {{errorMessage}}
+                </div>
+            </form>
         </div>
-           
     </div>
 </div>

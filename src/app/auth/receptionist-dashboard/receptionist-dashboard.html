@@ -1,763 +1,198 @@
 <app-header></app-header>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Wellness Clinic — Receptionist Dashboard</title>
-  <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>-->
-  <!--<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet"/>-->
-  <style>
-    * { box-sizing: border-box; }
-
-    :root {
-      --blue: #1a6fc4;
-      --blue-dark: #145aa0;
-      --blue-light: #e8f0fb;
-      --blue-mid: #d0e3f7;
-      --white: #ffffff;
-      --text: #1a2d45;
-      --muted: #6b82a0;
-      --border: #ccddf0;
-      --card-shadow: 0 2px 16px rgba(26,111,196,0.08);
-      --radius: 12px;
-    }
-
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: #f2f4f6;
-      color: var(--text);
-      min-height: 100vh;
-    }
-
-    /* ── HEADER ── */
-    app-header, .app-header {
-      display: block;
-    }
-    .app-header {
-      background: var(--blue);
-      color: var(--white);
-      padding: 0 32px;
-      height: 62px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 2px 12px rgba(26,111,196,0.18);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .app-header .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-family: 'Playfair Display', serif;
-      font-size: 1.25rem;
-      letter-spacing: 0.02em;
-    }
-    .app-header .brand i {
-      font-size: 1.4rem;
-      opacity: 0.9;
-    }
-    .app-header .header-right {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      font-size: 0.88rem;
-    }
-    .app-header .header-right .time {
-      opacity: 0.85;
-      font-weight: 500;
-    }
-    .app-header .avatar {
-      width: 34px; height: 34px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.22);
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 700;
-      font-size: 0.85rem;
-      border: 2px solid rgba(255,255,255,0.4);
-    }
-
-    /* ── LAYOUT ── */
-    .page-wrapper {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 28px 24px 48px;
-    }
-
-    /* ── WELCOME BANNER ── */
-    .welcome-banner {
-      background: linear-gradient(120deg, var(--blue) 60%, #2d8be0 100%);
-      border-radius: var(--radius);
-      color: var(--white);
-      padding: 28px 32px;
-      margin-bottom: 28px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 4px 20px rgba(26,111,196,0.2);
-      position: relative;
-      overflow: hidden;
-    }
-    .welcome-banner::after {
-      content: '';
-      position: absolute;
-      right: -40px; top: -60px;
-      width: 220px; height: 220px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.07);
-    }
-    .welcome-banner::before {
-      content: '';
-      position: absolute;
-      right: 60px; bottom: -80px;
-      width: 160px; height: 160px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.05);
-    }
-    .welcome-text h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-    .welcome-text p {
-      font-size: 0.9rem;
-      opacity: 0.82;
-    }
-    .welcome-date {
-      text-align: right;
-      font-size: 0.85rem;
-      opacity: 0.8;
-      line-height: 1.6;
-    }
-
-    /* ── QUICK ACTIONS (original buttons) ── */
-    /* .section-title {
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 14px;
-    }
-
-    .quick-actions {
-      display: flex;
-      gap: 14px;
-      margin-bottom: 28px;
-      flex-wrap: wrap;
-    } */
-
-    /* .btn-outline-primary {
-      display: inline-flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 18px 28px;
-      border: 2px solid var(--blue);
-      border-radius: var(--radius);
-      background: var(--white);
-      color: var(--blue);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.88rem;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background 0.18s, color 0.18s, box-shadow 0.18s, transform 0.12s;
-      box-shadow: var(--card-shadow);
-      min-width: 120px;
-    } */
-    /* .btn-outline-primary i { font-size: 1.35rem; }
-    .btn-outline-primary:hover {
-      background: var(--blue);
-      color: var(--white);
-      box-shadow: 0 6px 20px rgba(26,111,196,0.22);
-      transform: translateY(-2px);
-    }
-    .btn-outline-primary:active { transform: translateY(0); } */
-
-    /* ── STATS ROW ── */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-      gap: 16px;
-      margin-bottom: 28px;
-    }
-    .stat-card {
-      background: var(--white);
-      border-radius: var(--radius);
-      padding: 20px 22px;
-      border: 1px solid var(--border);
-      box-shadow: var(--card-shadow);
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      transition: transform 0.15s;
-    }
-    .stat-card:hover { transform: translateY(-2px); }
-    .stat-card .stat-icon {
-      width: 38px; height: 38px;
-      border-radius: 10px;
-      background: var(--blue-light);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--blue);
-      font-size: 1rem;
-      margin-bottom: 4px;
-    }
-    .stat-card .stat-value {
-      font-size: 1.75rem;
-      font-weight: 700;
-      color: var(--text);
-      line-height: 1;
-    }
-    .stat-card .stat-label {
-      font-size: 0.8rem;
-      color: var(--muted);
-      font-weight: 500;
-    }
-    .stat-card .stat-delta {
-      font-size: 0.75rem;
-      color: #2a9d5c;
-      font-weight: 600;
-    }
-
-    /* ── MAIN GRID ── */
-    .main-grid {
-      display: grid;
-      grid-template-columns: 1fr 340px;
-      gap: 22px;
-    }
-    @media (max-width: 860px) {
-      .main-grid { grid-template-columns: 1fr; }
-    }
-
-    /* ── CARD ── */
-    .card {
-      background: var(--white);
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
-      box-shadow: var(--card-shadow);
-      overflow: hidden;
-    }
-    .card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 18px 22px 14px;
-      border-bottom: 1px solid var(--blue-mid);
-    }
-    .card-header h3 {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--text);
-      display: flex;
-      align-items: center;
-      gap: 9px;
-    }
-    .card-header h3 i { color: var(--blue); font-size: 1rem; }
-    .card-header .see-all {
-      font-size: 0.78rem;
-      color: var(--blue);
-      text-decoration: none;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .card-body { padding: 4px 0; }
-
-    /* ── APPOINTMENT TABLE ── */
-    .appt-table { width: 100%; border-collapse: collapse; }
-    .appt-table th {
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--muted);
-      padding: 10px 22px;
-      text-align: left;
-      background: var(--blue-light);
-    }
-    .appt-table td {
-      padding: 14px 22px;
-      font-size: 0.87rem;
-      border-bottom: 1px solid #eef3fb;
-      vertical-align: middle;
-    }
-    .appt-table tr:last-child td { border-bottom: none; }
-    .appt-table tr:hover td { background: #f5f9ff; }
-
-    .patient-name { font-weight: 600; }
-    .patient-id { font-size: 0.75rem; color: var(--muted); }
-
-    .badge {
-      display: inline-block;
-      padding: 3px 10px;
-      border-radius: 20px;
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-    }
-    .badge-waiting { background: #fff5e0; color: #c07000; }
-    .badge-confirmed { background: #e3f5ec; color: #1a7a47; }
-    .badge-done { background: #eef2f8; color: #5a6a80; }
-    .badge-cancelled { background: #fdecea; color: #b03020; }
-
-    /* ── SIDEBAR PANELS ── */
-    .sidebar { display: flex; flex-direction: column; gap: 20px; }
-
-    /* Quick add form */
-    .quick-form { padding: 18px 20px; }
-    .form-group { margin-bottom: 13px; }
-    .form-group label {
-      display: block;
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--muted);
-      margin-bottom: 5px;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-    .form-group input, .form-group select {
-      width: 100%;
-      padding: 9px 13px;
-      border: 1.5px solid var(--border);
-      border-radius: 8px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.87rem;
-      color: var(--text);
-      background: var(--white);
-      outline: none;
-      transition: border-color 0.15s;
-    }
-    .form-group input:focus, .form-group select:focus {
-      border-color: var(--blue);
-      box-shadow: 0 0 0 3px rgba(26,111,196,0.10);
-    }
-    .btn-primary {
-      width: 100%;
-      padding: 11px;
-      background: var(--blue);
-      color: var(--white);
-      border: none;
-      border-radius: 8px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.9rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background 0.15s, box-shadow 0.15s;
-    }
-    .btn-primary:hover {
-      background: var(--blue-dark);
-      box-shadow: 0 4px 12px rgba(26,111,196,0.25);
-    }
-
-    /* Notices */
-    .notice-list { padding: 4px 0; }
-    .notice-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 14px 20px;
-      border-bottom: 1px solid #eef3fb;
-    }
-    .notice-item:last-child { border-bottom: none; }
-    .notice-dot {
-      width: 9px; height: 9px;
-      border-radius: 50%;
-      background: var(--blue);
-      margin-top: 5px;
-      flex-shrink: 0;
-    }
-    .notice-dot.urgent { background: #e05c3a; }
-    .notice-text { font-size: 0.84rem; line-height: 1.5; color: var(--text); }
-    .notice-time { font-size: 0.73rem; color: var(--muted); margin-top: 2px; }
-
-    /* ── FOOTER ── */
-    .dash-footer {
-      text-align: center;
-      margin-top: 36px;
-      font-size: 0.78rem;
-      color: var(--muted);
-    }
-
-    /* ── DOCTOR GRID ── */
-    .doctor-grid { display: flex; flex-direction: column; gap: 12px; }
-    .doctor-item {
-      display: flex;
-      align-items: center;
-      gap: 13px;
-      padding: 10px 12px;
-      border-radius: 10px;
-      background: var(--blue-light);
-      border: 1px solid var(--blue-mid);
-    }
-    .doc-avatar {
-      width: 38px; height: 38px;
-      border-radius: 50%;
-      background: var(--blue);
-      color: var(--white);
-      font-size: 0.78rem;
-      font-weight: 800;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
-    .doc-info { flex: 1; }
-    .doc-name { font-size: 0.88rem; font-weight: 700; color: var(--text); }
-    .doc-dept { font-size: 0.75rem; color: var(--muted); }
-
-    /* ── ACTIVITY FEED ── */
-    .activity-feed { padding: 8px 20px; }
-    .activity-item {
-      display: flex;
-      gap: 14px;
-      padding: 12px 0;
-      border-bottom: 1px solid #eef3fb;
-      align-items: flex-start;
-    }
-    .activity-item:last-child { border-bottom: none; }
-    .act-time {
-      font-size: 0.72rem;
-      color: var(--muted);
-      font-weight: 600;
-      white-space: nowrap;
-      padding-top: 2px;
-      min-width: 60px;
-    }
-    .act-line {
-      width: 2px;
-      background: var(--blue-mid);
-      border-radius: 2px;
-      align-self: stretch;
-      flex-shrink: 0;
-    }
-    .act-title { font-size: 0.87rem; font-weight: 600; color: var(--text); }
-    .act-sub { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
-
-    /* ── SLOT ITEMS ── */
-    .slot-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 11px 20px;
-      border-bottom: 1px solid #eef3fb;
-    }
-    .slot-item:last-child { border-bottom: none; }
-    .slot-time { font-size: 0.85rem; font-weight: 700; color: var(--blue); }
-    .slot-doc { font-size: 0.8rem; color: var(--muted); }
-
-    /* ── ANIMATIONS ── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .welcome-banner { animation: fadeUp 0.45s ease both; }
-    .quick-actions  { animation: fadeUp 0.45s 0.08s ease both; }
-    .stats-grid     { animation: fadeUp 0.45s 0.15s ease both; }
-    .main-grid      { animation: fadeUp 0.45s 0.22s ease both; }
-  </style>
-</head>
-<body>
-
-<!-- ── HEADER ── -->
-<!-- <header class="app-header">
-  <div class="brand">
-    <i class="fa fa-heartbeat"></i>
-    Wellness Clinic
-  </div>
-  <div class="header-right">
-    <span class="time" id="clock"></span>
-    <div class="avatar">RC</div>
-  </div>
-</header> -->
-
-<!-- ── PAGE ── -->
-<div class="page-wrapper">
-
-  <!-- Welcome -->
-  <div class="welcome-banner">
-    <div class="welcome-text">
-      <h2>Good Morning, Receptionist</h2>
-      <p>Here's your patient overview for today. Stay on top of appointments and walk-ins.</p>
+<div class="dashboard-wrapper">
+    <!-- Welcome Section -->
+    <div class="welcome-card fade-in">
+        <div class="welcome-header">
+            <h2>Good Morning, Receptionist</h2>
+            <p>Welcome back! Here's an overview of today's clinical activities.</p>
+        </div>
+        <div class="header-meta">
+            <div class="meta-item">
+                <i class="fas fa-calendar-alt"></i>
+                <span>{{ currentDate }}</span>
+            </div>
+            <div class="meta-item">
+                <i class="fas fa-clock"></i>
+                <span>{{ currentTime }}</span>
+            </div>
+        </div>
     </div>
-    <div class="welcome-date" id="today-date"></div>
-  </div>
 
-  <!-- ── QUICK ACTIONS (original buttons preserved) ── -->
-  <!-- <div class="section-title">Quick Actions</div>
-  <div class="quick-actions container mt-2">
-   n
-    <a href="#" role="button" class="btn btn-outline-primary">
-      <span><i class="fa fa-user-plus fa-lg"></i></span>
-      Add Patient
-    </a>
-    <a href="#" role="button" class="btn btn-outline-primary">
-      <span><i class="fa fa-calendar-plus-o fa-lg"></i></span>
-      Book Appointment
-    </a>
-    <a href="#" role="button" class="btn btn-outline-primary">
-      <span><i class="fa fa-search fa-lg"></i></span>
-      Search Patient
-    </a>
-    <a href="#" role="button" class="btn btn-outline-primary">
-      <span><i class="fa fa-print fa-lg"></i></span>
-      Print Token
-    </a>
-  </div> -->
+    <!-- Quick Actions -->
+    <div class="section-header fade-in" style="animation-delay: 0.1s;">
+        <h3 class="section-title">Quick Actions</h3>
+    </div>
+    <div class="actions-container fade-in" style="animation-delay: 0.1s;">
+        <a [routerLink]="['/patients/list']" class="action-btn">
+            <i class="fas fa-users-viewfinder"></i>
+            <span>List Patients</span>
+        </a>
+        <a [routerLink]="['/patients/add']" class="action-btn">
+            <i class="fas fa-user-plus"></i>
+            <span>Add Patient</span>
+        </a>
+        <a [routerLink]="['/appointments/list']" class="action-btn">
+            <i class="fas fa-calendar-check"></i>
+            <span>Appointments</span>
+        </a>
+        <!-- <a href="#" class="action-btn">
+            <i class="fas fa-print"></i>
+            <span>Print Token</span>
+        </a> -->
+    </div>
 
-  <div class="container mt-2">
-    <a [routerLink] ="['/patients/list']" role="button"
-    class="btn btn-outline-primary">
-    <span>
-        <i class="fa fa-users fa-lg"></i>
-    </span>
-    <br>List Patients
-    </a>
-    &nbsp;
-    <a [routerLink] ="['/patients/add']" role="button"
-        class="btn btn-outline-primary">
-        <span>
-            <i class="fa fa-user-plus fa-lg"></i>
-        </span>
-        <br>Add Patient
-    </a>
-    &nbsp;
-    <a [routerLink]="['/appointments/list']" role="button"
-        class="btn btn-outline-primary">
-        <span>
-            <i class="fa-solid fa-calendar-check fa-lg"></i>
-        </span>
-        <br>List Appointments
-    </a>
+    <!-- Stats Overview -->
+    <div class="stats-grid fade-in" style="animation-delay: 0.2s;">
+        <div class="stat-card">
+            <div class="stat-icon blue">
+                <i class="fas fa-calendar-day"></i>
+            </div>
+            <div class="stat-info">
+                <h4>Today's Appointments</h4>
+                <div class="value">24</div>
+                <div class="stat-trend trend-up">↑ 3 vs yesterday</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon orange">
+                <i class="fas fa-user-clock"></i>
+            </div>
+            <div class="stat-info">
+                <h4>In Waiting</h4>
+                <div class="value">7</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon green">
+                <i class="fas fa-check-double"></i>
+            </div>
+            <div class="stat-info">
+                <h4>Completed</h4>
+                <div class="value">11</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon purple">
+                <i class="fas fa-user-plus"></i>
+            </div>
+            <div class="stat-info">
+                <h4>New Patients</h4>
+                <div class="value">5</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-grid fade-in" style="animation-delay: 0.3s;">
+        <!-- Left Column: Doctor Availability & Activity -->
+        <div style="display: flex; flex-direction: column; gap: 2rem;">
+            <!-- Doctor Availability -->
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-user-md"></i> Doctor Availability</h3>
+                    <span class="badge badge-info">Live Status</span>
+                </div>
+                <div class="table-container">
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th>Doctor</th>
+                                <th>Specialization</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Dr. Arjun Pillai</strong></td>
+                                <td>General Medicine</td>
+                                <td><span class="badge badge-success">Available</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Dr. Priya Menon</strong></td>
+                                <td>Gynaecology</td>
+                                <td><span class="badge badge-danger">On Leave</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Dr. Meera Menon</strong></td>
+                                <td>Paediatrics</td>
+                                <td><span class="badge badge-success">Available</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Dr. Vivek Kumar</strong></td>
+                                <td>Orthopaedics</td>
+                                <td><span class="badge badge-success">Available</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-stream"></i> Recent Activity</h3>
+                </div>
+                <div class="list-group">
+                    <div class="list-item">
+                        <div class="item-icon"><i class="fas fa-ticket-alt text-primary"></i></div>
+                        <div class="item-content">
+                            <h5>Token #002 called</h5>
+                            <p>Jilu George &rarr; Dr. Anitha Pillai</p>
+                            <div class="item-time">10:42 AM</div>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="item-icon"><i class="fas fa-user-check text-success"></i></div>
+                        <div class="item-content">
+                            <h5>New patient registered</h5>
+                            <p>Fathima Beevi — P-00523 created</p>
+                            <div class="item-time">10:31 AM</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Sidebar Panels -->
+        <div style="display: flex; flex-direction: column; gap: 2rem;">
+            <!-- Token Counter -->
+            <div class="card" style="background: #f8fafc; border: 2px solid #3b82f6;">
+                <div class="card-header" style="background: white;">
+                    <h3><i class="fas fa-ticket-alt"></i> Serving Now</h3>
+                </div>
+                <div style="padding: 2rem; text-align: center;">
+                    <div style="font-size: 4rem; font-weight: 800; color: #1e40af; line-height: 1;">#004</div>
+                    <div style="font-size: 1.125rem; font-weight: 600; color: #475569; margin-top: 1rem;">Jilu George</div>
+                    <div style="margin: 1.5rem 0; height: 1px; background: #cbd5e1;"></div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div style="background: white; padding: 1rem; border-radius: 12px; border: 1px solid #e2e8f0;">
+                            <div style="font-size: 1.5rem; font-weight: 700; color: #3b82f6;">4</div>
+                            <div style="font-size: 0.75rem; font-weight: 600; color: #64748b; text-transform: uppercase;">Wait</div>
+                        </div>
+                        <div style="background: white; padding: 1rem; border-radius: 12px; border: 1px solid #e2e8f0;">
+                            <div style="font-size: 1.5rem; font-weight: 700; color: #10b981;">11</div>
+                            <div style="font-size: 0.75rem; font-weight: 600; color: #64748b; text-transform: uppercase;">Done</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notices -->
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-bullhorn"></i> Notices</h3>
+                </div>
+                <div class="list-group">
+                    <div class="list-item">
+                        <div class="item-content">
+                            <h5 class="text-danger"><i class="fas fa-exclamation-triangle me-2"></i>Staff Notice</h5>
+                            <p>Dr. Priya Menon unavailable for 7 days.</p>
+                            <div class="item-time">8:15 AM — Admin</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<br>
-
-  <!-- ── STATS ── -->
-  <div class="section-title">Today at a Glance</div>
-  <div class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-icon"><i class="fa fa-calendar-check-o"></i></div>
-      <div class="stat-value">24</div>
-      <div class="stat-label">Appointments Today</div>
-      <div class="stat-delta">↑ 3 from yesterday</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon"><i class="fa fa-hourglass-half"></i></div>
-      <div class="stat-value">7</div>
-      <div class="stat-label">Waiting</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon"><i class="fa fa-check-circle-o"></i></div>
-      <div class="stat-value">11</div>
-      <div class="stat-label">Completed</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon"><i class="fa fa-user-plus"></i></div>
-      <div class="stat-value">5</div>
-      <div class="stat-label">New Patients</div>
-      <div class="stat-delta">↑ 2 walk-ins</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon"><i class="fa fa-times-circle-o"></i></div>
-      <div class="stat-value">2</div>
-      <div class="stat-label">Cancelled</div>
-    </div>
-  </div>
-
-  <!-- ── MAIN GRID ── -->
-  <div class="main-grid">
-
-    <!-- Left column -->
-    <div style="display:flex;flex-direction:column;gap:20px;">
-
-      <!-- Doctor Availability -->
-      <div class="card">
-        <div class="card-header">
-          <h3><i class="fa fa-user-md"></i> Doctor Availability</h3>
-          <span class="see-all">Today</span>
-        </div>
-        <div class="card-body" style="padding:16px 20px;">
-          <div class="doctor-grid">
-            <div class="doctor-item">
-              <div class="doc-avatar">RK</div>
-              <div class="doc-info">
-                <div class="doc-name">Dr. Arjun Pillai</div>
-                <div class="doc-dept">General Medicine</div>
-              </div>
-              <span class="badge badge-confirmed">Available</span>
-            </div>
-            <div class="doctor-item">
-              <div class="doc-avatar">PM</div>
-              <div class="doc-info">
-                <div class="doc-name">Dr. Priya Menon</div>
-                <div class="doc-dept">Gynaecology</div>
-              </div>
-              <!--<span class="badge badge-waiting">Till 2 PM</span>-->
-              <span class="badge badge-cancelled">On Leave</span>
-            </div>
-            <div class="doctor-item">
-              <div class="doc-avatar">MM</div>
-              <div class="doc-info">
-                <div class="doc-name">Dr. Meera Menon</div>
-                <div class="doc-dept">Paediatrics</div>
-              </div>
-              <span class="badge badge-confirmed">Available</span>
-            </div>
-            <div class="doctor-item">
-              <div class="doc-avatar">VK</div>
-              <div class="doc-info">
-                <div class="doc-name">Dr. Vivek Kumar</div>
-                <div class="doc-dept">Orthopaedics</div>
-              </div>
-              <span class="badge badge-confirmed">Available</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Activity Feed -->
-      <div class="card">
-        <div class="card-header">
-          <h3><i class="fa fa-clock-o"></i> Recent Activity</h3>
-          <span class="see-all">Live</span>
-        </div>
-        <div class="card-body" style="padding:4px 0;">
-          <div class="activity-feed">
-            <div class="activity-item">
-              <div class="act-time">10:42 AM</div>
-              <div class="act-line"></div>
-              <div class="act-body">
-                <div class="act-title">Token #002 called</div>
-                <div class="act-sub">Jilu George → Dr. Anitha Pillai</div>
-              </div>
-            </div>
-            <div class="activity-item">
-              <div class="act-time">10:31 AM</div>
-              <div class="act-line"></div>
-              <div class="act-body">
-                <div class="act-title">New patient registered</div>
-                <div class="act-sub">Fathima Beevi — P-00523 created</div>
-              </div>
-            </div>
-            <div class="activity-item">
-              <div class="act-time">10:18 AM</div>
-              <div class="act-line"></div>
-              <div class="act-body">
-                <div class="act-title">Appointment cancelled</div>
-                <div class="act-sub">George Thomas — 11:30 AM slot freed</div>
-              </div>
-            </div>
-            <div class="activity-item">
-              <div class="act-time">09:55 AM</div>
-              <div class="act-line"></div>
-              <div class="act-body">
-                <div class="act-title">Lab report ready</div>
-                <div class="act-sub">Aisha Nair (P-00234) — collect at counter</div>
-              </div>
-            </div>
-            <div class="activity-item">
-              <div class="act-time">09:30 AM</div>
-              <div class="act-line"></div>
-              <div class="act-body">
-                <div class="act-title">Token #002 completed</div>
-                <div class="act-sub">Mohamed Anwar → Dr. Priya Menon</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Right sidebar -->
-    <div class="sidebar">
-
-      <!-- Notices -->
-      <div class="card">
-        <div class="card-header">
-          <h3><i class="fa fa-bell"></i> Notices</h3>
-          <span class="badge badge-waiting" style="font-size:0.7rem;">3 New</span>
-        </div>
-        <div class="notice-list">
-          <div class="notice-item">
-            <div class="notice-dot urgent"></div>
-            <div>
-              <div class="notice-text">Dr. Priya Menon unavailable on leave for 7 days from today.</div>
-              <div class="notice-time">8:15 AM — Admin</div>
-            </div>
-          </div>
-          <div class="notice-item">
-            <div class="notice-dot"></div>
-            <div>
-              <div class="notice-text">Lab reports for P-00234 (Aisha Nair) are ready for collection.</div>
-              <div class="notice-time">9:40 AM — Lab Dept.</div>
-            </div>
-          </div>
-          <div class="notice-item">
-            <div class="notice-dot"></div>
-            <div>
-              <div class="notice-text">Token printer paper is running low — please refill.</div>
-              <div class="notice-time">10:05 AM — System</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Token Counter -->
-      <div class="card">
-        <div class="card-header">
-          <h3><i class="fa fa-ticket"></i> Token Status</h3>
-        </div>
-        <div style="padding:20px;text-align:center;">
-          <div style="font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Currently Serving</div>
-          <div style="font-size:3.5rem;font-weight:800;color:var(--blue);line-height:1;">#004</div>
-          <div style="font-size:0.82rem;color:var(--muted);margin-top:4px;">Jilu George</div>
-          <div style="margin:18px 0;height:1px;background:var(--border);"></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:center;">
-            <div style="background:var(--blue-light);border-radius:10px;padding:12px;">
-              <div style="font-size:1.4rem;font-weight:800;color:var(--blue);">4</div>
-              <div style="font-size:0.72rem;color:var(--muted);font-weight:600;">Waiting</div>
-            </div>
-            <div style="background:#e3f5ec;border-radius:10px;padding:12px;">
-              <div style="font-size:1.4rem;font-weight:800;color:#1a7a47;">11</div>
-              <div style="font-size:0.72rem;color:var(--muted);font-weight:600;">Done</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Upcoming Slots -->
-      <div class="card">
-        <div class="card-header">
-          <h3><i class="fa fa-calendar"></i> Next Slots Open</h3>
-        </div>
-        <div style="padding:8px 0;">
-          <div class="slot-item"><span class="slot-time">12:30 PM</span><span class="slot-doc">Dr. Arjun Pillai</span></div>
-          <div class="slot-item"><span class="slot-time">01:00 PM</span><span class="slot-doc">Dr. Meera Menon</span></div>
-          <div class="slot-item"><span class="slot-time">01:30 PM</span><span class="slot-doc">Dr. Vivek Kumar</span></div>
-          <div class="slot-item"><span class="slot-time">02:00 PM</span><span class="slot-doc">Dr. Arjun Pillai</span></div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="dash-footer">Wellness Clinic Receptionist Portal &nbsp;·&nbsp; <span id="foot-date"></span></div>
-</div>
-
-<script>
-  function updateClock() {
-    const now = new Date();
-    document.getElementById('clock').textContent = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
-  }
-  updateClock();
-  setInterval(updateClock, 1000);
-
-  const dateStr = new Date().toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-  document.getElementById('today-date').innerHTML = dateStr.replace(',', '<br>');
-  document.getElementById('foot-date').textContent = dateStr;
-</script>
-</body>
-</html>

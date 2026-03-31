@@ -15,6 +15,7 @@ export class Login {
   loginForm!: FormGroup; // ! assertion assignment operator expects all properties inside form to be initialised.
 
   isSubmitted: boolean = false;
+  isLoading: boolean = false;
   errorMessage: string = '';
 
   constructor(
@@ -52,11 +53,13 @@ export class Login {
     //Check form is VALID..then proceeds and redirect to the dashboard based on roleId
     if (this.loginForm?.valid) {
       this.errorMessage = '';
+      this.isLoading = true;
       console.log(this.loginForm.value);
 
       //Call REST API to check UserName and Password
       this.authService.loginVerify(this.loginForm.value).subscribe(
         (response: any) => {
+          this.isLoading = false;
           console.log(response);
 
           //Based on Role, need to redirect
@@ -94,6 +97,7 @@ export class Login {
           }
         },
         (error: any) => {
+          this.isLoading = false;
           console.log(error);
           this.errorMessage = 'Sorry! Invalid credentials';
         },

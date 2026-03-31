@@ -56,9 +56,9 @@ export class ConsultationForm implements OnInit {
         this.successMessage = this.appointment._state.sMsg || '';
     } else {
         this.consultationForm = this.fb.group({
-          symptoms: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-Z0-9].*/)]],
-          diagnosis: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-Z0-9].*/)]],
-          advice: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9].*/)]]
+          symptoms: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-Z\s]*$/)]],
+          diagnosis: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-Z\s]*$/)]],
+          advice: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)]]
         });
 
         this.labTestForm = this.fb.group({
@@ -137,7 +137,7 @@ export class ConsultationForm implements OnInit {
                        const medGroup = this.fb.group({
                           medicineId: [medId, Validators.required],
                           dosage: [m.dosage || m.Dosage || '', [Validators.required, Validators.pattern(/^[^\s].*/)]],
-                          duration: [m.duration || m.Duration || '', [Validators.required, Validators.pattern(/^[^\s].*/)]],
+                          duration: [m.duration || m.Duration || '', [Validators.required, Validators.maxLength(2), Validators.pattern(/^[0-9]*$/)]],
                           instructions: [m.instructions || m.Instructions || '', [Validators.pattern(/^[^\s].*/)]]
                        });
                        this.medicinesArray.push(medGroup);
@@ -156,7 +156,7 @@ export class ConsultationForm implements OnInit {
                        const testId = testIdRaw ? Number(testIdRaw) : '';
                        const testGroup = this.fb.group({
                           labTestId: [testId, Validators.required],
-                          notes: [t.notes || t.Notes || '', [Validators.pattern(/^[^\s].*/)]]
+                          notes: [t.notes || t.Notes || '', [Validators.pattern(/^[a-zA-Z\s]*$/)]]
                        });
                        this.testsArray.push(testGroup);
                     });
@@ -239,7 +239,7 @@ export class ConsultationForm implements OnInit {
   addTest() {
     const testGroup = this.fb.group({
       labTestId: ['', Validators.required],
-      notes: ['', [Validators.pattern(/^[^\s].*/)]]
+      notes: ['', [Validators.pattern(/^[a-zA-Z\s]*$/)]]
     });
     this.testsArray.push(testGroup);
   }
@@ -253,7 +253,7 @@ export class ConsultationForm implements OnInit {
     const medGroup = this.fb.group({
       medicineId: ['', Validators.required],
       dosage: ['', Validators.required],
-      duration: ['', [Validators.required, Validators.pattern(/^[^\s].*/)]],
+      duration: ['', [Validators.required, Validators.maxLength(2), Validators.pattern(/^[0-9]*$/)]],
       instructions: ['', [Validators.pattern(/^[^\s].*/)]]
     });
     this.medicinesArray.push(medGroup);
@@ -265,5 +265,26 @@ export class ConsultationForm implements OnInit {
 
   closeForm() {
     this.closeEvent.emit();
+  }
+
+  // Restrict numbers and special characters
+  allowLettersOnly(event: any): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    // Allow: Letters (a-z, A-Z) and Space (32)
+    if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123) || charCode === 32) {
+      return true;
+    }
+    event.preventDefault();
+    return false;
+  }
+
+  allowNumbersOnly(event: any): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    // Allow: Numbers (48-57)
+    if (charCode > 47 && charCode < 58) {
+      return true;
+    }
+    event.preventDefault();
+    return false;
   }
 }

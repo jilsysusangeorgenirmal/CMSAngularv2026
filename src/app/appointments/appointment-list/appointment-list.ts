@@ -147,7 +147,7 @@ itemsPerPage: number = 7; // records per page
 
         // Patient / Doctor Metadata
         doc.text(`Patient: ${billData.PatientName} (MRN: ${billData.PatientId})`, 14, 72);
-        doc.text(`Consultant Doctor: Dr. ${billData.DoctorName}`, 14, 79);
+        doc.text(`Consultant Doctor: ${billData.DoctorName}`, 14, 79);
 
         // Consultation Billing Table Using AutoTable
         autoTable(doc, {

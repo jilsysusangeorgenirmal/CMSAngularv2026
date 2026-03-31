@@ -1,8 +1,21 @@
 <div class="container mt-4">
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h2>Pending Lab Tests</h2>
-    <div *ngIf="isLoading" class="spinner-border text-primary" role="status">
-      <span class="visually-hidden">Loading...</span>
+    <div class="d-flex align-items-center gap-3">
+      <div class="input-group input-group-sm" style="max-width: 300px;">
+        <span class="input-group-text bg-white border-end-0">
+          <i class="fas fa-search text-muted"></i>
+        </span>
+        <input type="text" class="form-control border-start-0 ps-0" 
+          placeholder="Search patient, test or doctor..." 
+          [(ngModel)]="searchTerm">
+      </div>
+      <button class="btn btn-sm btn-outline-secondary" (click)="loadPendingPrescriptions()" [disabled]="isLoading">
+        <i class="fas fa-sync-alt" [class.fa-spin]="isLoading"></i> Refresh
+      </button>
+      <div *ngIf="isLoading" class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
     </div>
   </div>
 
@@ -23,7 +36,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let p of pendingPrescriptions">
+            <tr *ngFor="let p of filteredPrescriptions">
               <td>{{ p.LabTestPrescriptionId }}</td>
               <td>{{ p.PatientName }}</td>
               <td>{{ p.DoctorName }}</td>
@@ -31,12 +44,17 @@
               <td>{{ p.CategoryName }}</td>
               <td>{{ p.Price | currency:'INR' }}</td>
               <td>
-                <span class="badge" 
+                <span class="badge rounded-pill" 
                   [ngClass]="{
                     'bg-warning text-dark': p.Status === 'Pending',
                     'bg-success': p.Status === 'Completed',
                     'bg-info': p.Status === 'InProgress'
                   }">
+                  <i class="fas" [ngClass]="{
+                    'fa-clock': p.Status === 'Pending',
+                    'fa-check-circle': p.Status === 'Completed',
+                    'fa-spinner fa-spin': p.Status === 'InProgress'
+                  } + ' me-1'"></i>
                   {{ p.Status }}
                 </span>
               </td>
@@ -62,7 +80,7 @@
             </tr>
             <tr *ngIf="!isLoading && pendingPrescriptions.length === 0">
               <td colspan="8" class="text-center text-muted py-4">
-                No pending lab tests found.
+                No matching lab tests found.
               </td>
             </tr>
           </tbody>

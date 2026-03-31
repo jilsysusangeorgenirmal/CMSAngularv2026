@@ -1,0 +1,221 @@
+/* Patient List - Professional Clinical Theme */
+
+.patient-list-container {
+    padding: 2.5rem 1.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    background-color: #f8fafc;
+    min-height: calc(100vh - 60px);
+}
+
+.card {
+    background: white;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    overflow: hidden;
+}
+
+.list-header {
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.search-group {
+    flex: 1;
+    max-width: 480px;
+}
+
+.input-group-modern {
+    display: flex;
+    background: #f1f5f9;
+    border-radius: 10px;
+    padding: 6px 12px;
+    align-items: center;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.input-group-modern:focus-within {
+    background: white;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.search-input {
+    background: transparent;
+    border: none;
+    padding: 8px 10px;
+    flex: 1;
+    font-size: 0.95rem;
+    color: #1e293b;
+    outline: none;
+}
+
+.search-icon {
+    color: #94a3b8;
+}
+
+.btn-add {
+    background: #1d4ed8;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    font-size: 0.95rem;
+}
+
+.btn-add:hover {
+    background: #1e40af;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(29, 78, 216, 0.2);
+}
+
+/* Patient Table Styles */
+.table-responsive {
+    overflow-x: auto;
+}
+
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.custom-table th {
+    background: #f8fafc;
+    padding: 1rem 1.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #64748b;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: left;
+}
+
+.custom-table td {
+    padding: 1.25rem 1.5rem;
+    font-size: 0.9375rem;
+    color: #334155;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.custom-table tr:hover td {
+    background-color: #f1f5f9;
+}
+
+/* Action Icons Styling */
+.action-btn-group {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+    background: transparent;
+}
+
+.btn-edit {
+    color: #0ea5e9;
+    border-color: #e0f2fe;
+}
+.btn-edit:hover {
+    background: #e0f2fe;
+    border-color: #0ea5e9;
+}
+
+.btn-appointment {
+    color: #10b981;
+    border-color: #d1fae5;
+}
+.btn-appointment:hover {
+    background: #d1fae5;
+    border-color: #10b981;
+}
+
+/* Badges / Status Tags */
+.badge {
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.badge-info {
+    background: #e0f2fe;
+    color: #0369a1;
+    border: 1px solid #bae6fd;
+}
+
+.badge-success {
+    background: #dcfce7;
+    color: #15803d;
+    border: 1px solid #bbf7d0;
+}
+
+.badge-outline {
+    background: transparent;
+    border: 1px solid #e2e8f0;
+    color: #64748b;
+}
+
+/* Badges/Tags */
+.patient-code {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #64748b;
+    background: #f1f5f9;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.patient-name {
+    font-weight: 600;
+    color: #0f172a;
+}
+
+/* Pagination Styling override */
+::ng-deep .ngx-pagination {
+    margin-top: 2rem !important;
+    display: flex !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
+}
+
+::ng-deep .ngx-pagination .current {
+    background: #3b82f6 !important;
+    border-radius: 8px !important;
+    padding: 6px 12px !important;
+}
+
+::ng-deep .ngx-pagination a {
+    border-radius: 8px !important;
+    padding: 6px 12px !important;
+    color: #64748b !important;
+}
+
+::ng-deep .ngx-pagination a:hover {
+    background: #f1f5f9 !important;
+    color: #3b82f6 !important;
+}
