@@ -1,0 +1,98 @@
+<div class="container-fluid mt-4 fade-in">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="header-section">
+      <h2 class="fw-bold text-primary mb-1">
+        <i class="fas fa-check-circle me-2"></i> Completed Lab Tests
+      </h2>
+      <p class="text-muted mb-0">Manage and download finished lab reports and billing invoices.</p>
+    </div>
+    
+    <div class="actions">
+      <button class="btn btn-outline-primary rounded-pill px-3" (click)="fetchCompletedPrescriptions()">
+        <i class="fas fa-sync-alt me-2" [class.fa-spin]="isLoading"></i> Refresh
+      </button>
+    </div>
+  </div>
+
+  <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="bg-light-blue text-dark text-uppercase small ls-wide">
+            <tr>
+              <th class="ps-4">Patient Details</th>
+              <th>Doctor</th>
+              <th>Test Name</th>
+              <th>Result Value</th>
+              <th>Test Date</th>
+              <th class="text-center pe-4">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let p of completedPrescriptions" class="test-row">
+              <td class="ps-4">
+                <div class="d-flex align-items-center">
+                  <div class="avatar-circle me-3">
+                    {{ p.PatientName.charAt(0) }}
+                  </div>
+                  <div>
+                    <div class="fw-bold text-dark">{{ p.PatientName }}</div>
+                    <div class="text-muted small">ID: PT-{{ p.PatientId }}</div>
+                  </div>
+                </div>
+              </td>
+              <td class="text-secondary">
+                <i class="fas fa-user-md me-1 text-primary small"></i> {{ p.DoctorName }}
+              </td>
+              <td>
+                <span class="badge rounded-pill bg-soft-primary text-primary px-3">
+                  {{ p.TestName }}
+                </span>
+              </td>
+              <td class="text-dark fw-medium">
+                {{ p.ResultValue }}
+              </td>
+              <td class="text-muted small">
+                {{ p.ResultDate | date:'mediumDate' }}
+                <div class="text-muted small">{{ p.ResultDate | date:'shortTime' }}</div>
+              </td>
+              <td class="text-center pe-4">
+                <div class="btn-group shadow-sm rounded-3 overflow-hidden">
+                  <button class="btn btn-primary btn-sm px-3 py-2 border-0" 
+                    title="Generate Bill"
+                    (click)="generateBill(p.PrescriptionId)">
+                    <i class="fas fa-file-invoice-dollar me-2"></i> Bill
+                  </button>
+                  <button class="btn btn-success btn-sm px-3 py-2 border-0" 
+                    title="View Lab Report"
+                    (click)="downloadReport(p.PrescriptionId)">
+                    <i class="fas fa-file-pdf me-2"></i> Result
+                  </button>
+                </div>
+              </td>
+            </tr>
+            
+            <tr *ngIf="!isLoading && completedPrescriptions.length === 0">
+              <td colspan="6" class="text-center py-5">
+                <div class="empty-state">
+                  <i class="fas fa-vial-circle-check fa-4x text-light mb-3"></i>
+                  <h5 class="text-muted">No completed tests found yet.</h5>
+                  <p class="text-secondary small">Once results are added, they will appear here.</p>
+                </div>
+              </td>
+            </tr>
+            
+            <tr *ngIf="isLoading">
+              <td colspan="6" class="text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-2 text-primary">Fetching completed prescriptions...</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -36,6 +36,7 @@
     "ngx-pagination": "^6.0.3",
     "ngx-toastr": "^19.1.0",
     "rxjs": "~7.8.0",
+    "sweetalert2": "^11.26.24",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
   },

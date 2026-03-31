@@ -1,0 +1,9 @@
+/* Dashboard specific styles */
+.badge {
+  font-size: 0.9em;
+  padding: 0.5em 0.8em;
+}
+
+table {
+  min-width: 800px;
+}

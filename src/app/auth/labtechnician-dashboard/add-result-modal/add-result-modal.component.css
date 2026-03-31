@@ -1,0 +1,25 @@
+/* Modal backdrop to simulate the dark transparent background */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1040;
+}
+
+/* Force modal to display block over the backdrop */
+.custom-modal-display {
+  display: block;
+  z-index: 1050;
+}
+
+.modal-content {
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.modal-header {
+  border-bottom: 0;
+}

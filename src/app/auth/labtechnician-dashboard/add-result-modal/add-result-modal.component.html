@@ -1,0 +1,64 @@
+<!-- Modal Backdrop overlay -->
+<div class="modal-backdrop fade show"></div>
+
+<!-- Modal Dialog -->
+<div class="modal fade show custom-modal-display" tabindex="-1" role="dialog" aria-modal="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content shadow">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">
+          <i class="fas fa-flask me-2"></i> Add Result for {{ prescription.TestName }}
+        </h5>
+        <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="onCancel()"></button>
+      </div>
+
+      <div class="modal-body p-4">
+        <!-- Prescription Info Summary -->
+        <div class="alert alert-light border mb-4">
+          <div class="row">
+            <div class="col-6 mb-2"><strong>Patient:</strong> {{ prescription.PatientName }}</div>
+            <div class="col-6 mb-2"><strong>Doctor:</strong> {{ prescription.DoctorName }}</div>
+            <div class="col-12"><strong>Category:</strong> {{ prescription.CategoryName }}</div>
+          </div>
+        </div>
+
+        <!-- Result Form -->
+        <form [formGroup]="resultForm" (ngSubmit)="onSubmit()">
+          
+          <div class="mb-3">
+            <label for="resultValue" class="form-label fw-bold">Result Value <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="resultValue" formControlName="resultValue" 
+                   placeholder="Enter measured value (e.g. 120 mg/dL)"
+                   [ngClass]="{'is-invalid': resultForm.get('resultValue')?.invalid && resultForm.get('resultValue')?.touched}">
+                   
+            <div *ngIf="resultForm.get('resultValue')?.invalid && resultForm.get('resultValue')?.touched" class="invalid-feedback">
+              <div *ngIf="resultForm.get('resultValue')?.errors?.['required']">Result value is required.</div>
+              <div *ngIf="resultForm.get('resultValue')?.errors?.['maxlength']">Value cannot exceed 100 characters.</div>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label for="remarks" class="form-label fw-bold">Remarks (Optional)</label>
+            <textarea class="form-control" id="remarks" rows="3" formControlName="remarks" 
+                      placeholder="Any notes, clinical remarks, or interpretations"
+                      [ngClass]="{'is-invalid': resultForm.get('remarks')?.invalid && resultForm.get('remarks')?.touched}"></textarea>
+                      
+            <div *ngIf="resultForm.get('remarks')?.invalid && resultForm.get('remarks')?.touched" class="invalid-feedback">
+              <div *ngIf="resultForm.get('remarks')?.errors?.['maxlength']">Remarks cannot exceed 255 characters.</div>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-end gap-2">
+            <button type="button" class="btn btn-secondary" (click)="onCancel()" [disabled]="isSubmitting">
+              Cancel
+            </button>
+            <button type="submit" class="btn btn-success" [disabled]="isSubmitting">
+              <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+              <i *ngIf="!isSubmitting" class="fas fa-save me-1"></i> Save Result
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

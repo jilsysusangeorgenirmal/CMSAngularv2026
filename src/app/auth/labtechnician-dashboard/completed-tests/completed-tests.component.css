@@ -1,0 +1,77 @@
+:host {
+  display: block;
+  background-color: #f8fbff;
+  min-height: 80vh;
+}
+
+.bg-light-blue {
+    background-color: #e3f2fd !important;
+}
+
+.ls-wide {
+    letter-spacing: 0.1em;
+}
+
+.avatar-circle {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #1e88e5, #42a5f5);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.test-row {
+    transition: all 0.3s ease-in-out;
+    background-color: #fff;
+}
+
+.test-row:hover {
+    background-color: #eff6ff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(66, 165, 245, 0.1);
+}
+
+.bg-soft-primary {
+    background-color: #e0f2fe;
+    color: #0369a1;
+}
+
+.btn-group {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.btn-primary {
+    background: linear-gradient(to right, #2563eb, #3b82f6);
+}
+
+.btn-success {
+    background: linear-gradient(to right, #059669, #10b981);
+}
+
+.empty-state {
+    padding: 60px 0;
+    color: #94a3b8;
+}
+
+.fade-in {
+    animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.card {
+    border: none;
+    transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08) !important;
+}

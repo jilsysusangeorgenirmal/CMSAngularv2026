@@ -1,20 +1,40 @@
 <app-header></app-header>
 
-<div class="container mt-2">
-    <a [routerLink] ="['/employees/list']" role="button"
-    class="btn btn-outline-primary">
-    <span>
-        <i class="fa fa-users fa-lg"></i>
-    </span>
-    <br>List Labtests
-    </a>
-    &nbsp;
-    <a [routerLink] ="['/employees/add']" role="button"
-        class="btn btn-outline-primary">
-        <span>
-            <i class="fa fa-user-plus fa-lg"></i>
-        </span>
-        <br>Edit Labtest
-    </a>
-</div>
+<div class="container-fluid mt-4">
+    <div class="row mb-3">
+        <div class="col-12">
+            <ul class="nav nav-pills shadow-sm p-2 bg-white rounded">
+                <li class="nav-item">
+                    <a class="nav-link cursor-pointer" [class.active]="activeTab === 'pending'" (click)="switchTab('pending')" role="button">
+                        <i class="fas fa-vials me-2"></i> Pending Prescriptions
+                    </a>
+                </li>
+                <li class="nav-item ms-2">
+                    <a class="nav-link cursor-pointer" [class.active]="activeTab === 'tests'" (click)="switchTab('tests')" role="button">
+                        <i class="fas fa-list-alt me-2"></i> Lab Tests Catalog
+                    </a>
+                </li>
+                <li class="nav-item ms-2">
+                    <a class="nav-link cursor-pointer" [class.active]="activeTab === 'categories'" (click)="switchTab('categories')" role="button">
+                        <i class="fas fa-tags me-2"></i> Categories
+                    </a>
+                </li>
+                <li class="nav-item ms-2">
+                    <a class="nav-link cursor-pointer" [class.active]="activeTab === 'completed'" (click)="switchTab('completed')" role="button">
+                        <i class="fas fa-check-circle me-2"></i> Completed Tests
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
 
+    <div class="row">
+        <div class="col-12">
+            <!-- Embedding the components here based on active tab -->
+            <app-pending-tests *ngIf="activeTab === 'pending'"></app-pending-tests>
+            <app-lab-tests *ngIf="activeTab === 'tests'"></app-lab-tests>
+            <app-lab-categories *ngIf="activeTab === 'categories'"></app-lab-categories>
+            <app-completed-tests *ngIf="activeTab === 'completed'"></app-completed-tests>
+        </div>
+    </div>
+</div>

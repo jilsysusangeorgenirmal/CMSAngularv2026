@@ -1,0 +1,45 @@
+<div class="card shadow-sm mt-3">
+  <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+    <h4 class="mb-0 text-primary"><i class="fas fa-list-alt me-2"></i> Lab Tests Catalog</h4>
+    <div *ngIf="isLoading" class="spinner-border spinner-border-sm text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-hover table-striped mb-0 align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>ID</th>
+            <th>Test Name</th>
+            <th>Category</th>
+            <th>Normal Range</th>
+            <th>Price</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let test of labTests">
+            <td>{{ test.LabTestId }}</td>
+            <td class="fw-bold">{{ test.TestName }}</td>
+            <td>
+              <span class="badge bg-secondary">{{ test.Category?.CategoryName || 'Unknown' }}</span>
+            </td>
+            <td>{{ test.NormalRange || 'N/A' }}</td>
+            <td>{{ test.Price | currency:'INR' }}</td>
+            <td>
+              <span class="badge" [ngClass]="test.IsActive ? 'bg-success' : 'bg-danger'">
+                {{ test.IsActive ? 'Active' : 'Inactive' }}
+              </span>
+            </td>
+          </tr>
+          <tr *ngIf="!isLoading && labTests.length === 0">
+            <td colspan="6" class="text-center py-4 text-muted">
+              No lab tests found in the catalog.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
